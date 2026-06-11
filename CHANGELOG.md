@@ -7,6 +7,39 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [0.2.0] — 2026-06-06
+
+### Added
+
+#### Per-Call Routing
+- `PolicyRouter` — routes **every call independently** across any number of
+  providers using ordered, user-defined rules. The call site never changes;
+  each task is served by whichever provider the rules choose (cheap/private
+  tasks on-device, hard reasoning in the cloud).
+- `RouteRules` — ready-made rules: `sensitive()` (PII keywords stay local),
+  `shortInput()`, `longContext()`, `needsTools()`, `streaming()`, `custom()`.
+- `RouteContext` — per-call info exposed to rules (messages, tools,
+  latest user message, total context length, streaming flag).
+- `RouteDecision` + `onRoute` callback — observe every routing decision for
+  logging, cost dashboards, or a "running locally 🔒 / cloud ☁️" UI badge.
+- Automatic fallback to the default provider when a routed provider fails.
+- `GenesisAgent.chat()` / `chatStream()` now accept an optional `provider`
+  override to force a specific provider **for that call only**.
+
+#### Flows (Genkit-inspired)
+- `GenesisFlow` — chain multi-step AI pipelines with named, typed, observable
+  steps: `GenesisFlow.start<String>('trip-planner').then(...).map(...)`.
+- `FlowContext` — shared state between steps (`ctx.set()` / `ctx.get()`).
+- `FlowEvent` (`FlowStepStarted` / `FlowStepCompleted` / `FlowStepFailed`) —
+  live progress events for step-by-step UI.
+- `FlowException` — failures carry the flow + step name for fast debugging.
+
+### Improved
+- `SmartRouter.stream()` now falls back to the secondary provider when the
+  primary stream fails before emitting output (previously: no fallback).
+
+---
+
 ## [0.1.1] — 2026-05-29
 
 ### Fixed

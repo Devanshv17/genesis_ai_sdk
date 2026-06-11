@@ -53,12 +53,30 @@ class GenesisAgent {
   ///
   /// [onStep] fires for every ReAct step (tool call, result, etc.)
   /// so you can update the UI in real time.
+  ///
+  /// Pass [provider] to override the agent's provider **for this call only** —
+  /// e.g. force a sensitive turn on-device while everything else uses the
+  /// agent's default. For rule-based per-call routing, see [PolicyRouter].
+  ///
+  /// ```dart
+  /// // Normal turn — uses the agent's provider (or router).
+  /// await agent.chat('Summarize this article');
+  ///
+  /// // Explicitly route one turn to a local model.
+  /// await agent.chat('My salary is 95k, plan my budget',
+  ///     provider: localGemma);
+  /// ```
   Future<AgentResponse> chat(
     String userMessage, {
     void Function(AgentStep step)? onStep,
+    LlmProvider? provider,
   }) async {
     final history = await _buildHistory(userMessage);
-    final response = await _executor.run(messages: history, onStep: onStep);
+    final executor = provider == null
+        ? _executor
+        : ReActExecutor(
+            provider: provider, tools: tools, maxIterations: maxIterations);
+    final response = await executor.run(messages: history, onStep: onStep);
     await _persistResponse(userMessage, response);
     return response;
   }
@@ -66,10 +84,13 @@ class GenesisAgent {
   /// Stream plain text tokens for a simple (no-tool) conversation turn.
   ///
   /// For tool-calling use [chat] instead — tool calls can't be streamed.
-  Stream<String> chatStream(String userMessage) async* {
+  ///
+  /// Pass [provider] to override the agent's provider for this call only.
+  Stream<String> chatStream(String userMessage, {LlmProvider? provider}) async* {
     final history = await _buildHistory(userMessage);
+    final active = provider ?? this.provider;
     String fullResponse = '';
-    await for (final token in provider.stream(messages: history)) {
+    await for (final token in active.stream(messages: history)) {
       fullResponse += token;
       yield token;
     }

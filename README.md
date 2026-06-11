@@ -12,6 +12,8 @@ Add intelligent, tool-calling AI to any Flutter app in minutes. One clean API wo
 |---|---|
 | 🧠 **ReAct loop** | Agent reasons → calls tools → observes results → repeats until done |
 | 🔌 **7 providers** | Gemini, OpenAI, Anthropic, HuggingFace (cloud), Ollama (local), on-device Gemma, on-device GGUF (llama.cpp) |
+| 🧭 **Per-call routing** | `PolicyRouter` — route each call cloud/on-device by your own rules (NEW in 0.2.0) |
+| 🔗 **Flows** | `GenesisFlow` — chain multi-step AI pipelines with named, observable steps (NEW in 0.2.0) |
 | 🛠️ **Built-in tools** | Calculator, date/time, HTTP fetch, mock weather — zero config |
 | 🔧 **Custom tools** | Type-safe `GenesisTool.define()` with auto JSON Schema |
 | 💾 **Persistent memory** | `HiveMemoryStore` — history survives app restarts |
@@ -27,7 +29,7 @@ Add intelligent, tool-calling AI to any Flutter app in minutes. One clean API wo
 
 ```yaml
 dependencies:
-  genesis_ai_sdk: ^0.1.0
+  genesis_ai_sdk: ^0.2.0
 ```
 
 Or, to use directly from source:
@@ -366,6 +368,75 @@ final privacyRouter = PrivacyRouter(
   sensitiveKeys: ['email', 'phone', 'ssn'],
 );
 ```
+
+---
+
+## Per-call routing (NEW in 0.2.0)
+
+`SmartRouter` picks a backend once; `PolicyRouter` decides **per call** —
+so cheap/private/offline-friendly tasks run on-device and only the hard
+ones hit the cloud. You define the policy; the agent code never changes:
+
+```dart
+final router = PolicyRouter(
+  providers: {
+    'local': GemmaProvider(...),          // private, free
+    'cloud': GeminiProvider(apiKey: ''),  // smart, paid
+  },
+  defaultProvider: 'cloud',
+  rules: [
+    RouteRules.sensitive(useProvider: 'local'),   // PII stays on-device
+    RouteRules.shortInput(useProvider: 'local'),  // small tasks stay local
+    RouteRules.needsTools(useProvider: 'cloud'),  // tool calls need cloud
+  ],
+  onRoute: (d) => print(d), // log/badge every decision
+);
+
+final agent = GenesisAgent(provider: router); // call sites never change
+```
+
+Built-in rules: `sensitive()`, `shortInput()`, `longContext()`,
+`needsTools()`, `streaming()`, `custom()` — or write any predicate over
+`RouteContext`. A failing routed provider falls back to the default
+automatically.
+
+Need a one-off override instead of a policy? Force a provider per call:
+
+```dart
+await agent.chat('My salary is 95k, plan my budget', provider: localGemma);
+```
+
+---
+
+## Flows — multi-step pipelines (NEW in 0.2.0)
+
+Chain agent calls, tool runs, and parsing into one named, observable,
+type-safe pipeline (inspired by Genkit's flows):
+
+```dart
+final tripPlanner = GenesisFlow.start<String>('trip-planner')
+    .then<String>('extract-city', (input, ctx) async {
+      final r = await extractor.chat('Extract the city: $input');
+      return r.text;
+    })
+    .then<String>('fetch-weather', (city, ctx) async {
+      ctx.set('city', city);                  // share state between steps
+      return await weatherApi.forecast(city);
+    })
+    .then<String>('write-plan', (weather, ctx) async {
+      final city = ctx.get<String>('city');
+      final r = await planner.chat('Plan a day in $city. Weather: $weather');
+      return r.text;
+    });
+
+final plan = await tripPlanner.run(
+  'I want to visit Tokyo tomorrow',
+  onEvent: (e) => print(e),  // FlowStepStarted / Completed / Failed → live UI
+);
+```
+
+Failures throw `FlowException` carrying the flow + step name, so logs point
+straight at the failing stage.
 
 ---
 

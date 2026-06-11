@@ -91,8 +91,25 @@ class SmartRouter extends LlmProvider {
   Stream<String> stream({
     required List<Message> messages,
     double temperature = 0.7,
-  }) =>
-      _active.stream(messages: messages, temperature: temperature);
+  }) async* {
+    if (strategy == RouterStrategy.secondaryOnly) {
+      yield* secondary.stream(messages: messages, temperature: temperature);
+      return;
+    }
+    // primaryFirst / latencyBased: if the primary stream fails before
+    // producing any output, fall back to the secondary stream silently.
+    var emitted = false;
+    try {
+      await for (final token
+          in primary.stream(messages: messages, temperature: temperature)) {
+        emitted = true;
+        yield token;
+      }
+    } catch (_) {
+      if (emitted) rethrow; // mid-stream failure: don't restart and duplicate
+      yield* secondary.stream(messages: messages, temperature: temperature);
+    }
+  }
 }
 
 /// A privacy-preserving router that strips sensitive values before sending

@@ -68,6 +68,10 @@ export 'src/executor/react_executor.dart';
 
 // ── Router ───────────────────────────────────────────────────────────────────
 export 'src/router/smart_router.dart';
+export 'src/router/policy_router.dart'; // per-call routing: PolicyRouter, RouteRules
+
+// ── Flow — Genkit-style step chaining ────────────────────────────────────────
+export 'src/flow/genesis_flow.dart'; // GenesisFlow, FlowContext, FlowEvent
 
 // ── Safety ───────────────────────────────────────────────────────────────────
 export 'src/safety/input_guard.dart';

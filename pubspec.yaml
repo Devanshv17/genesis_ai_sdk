@@ -1,6 +1,6 @@
 name: genesis_ai_sdk
 description: Universal Flutter SDK for building AI agents locally and in the cloud.
-version: 0.1.1
+version: 0.2.0
 homepage: https://github.com/Devanshv17/genesis_ai_sdk
 repository: https://github.com/Devanshv17/genesis_ai_sdk
 issue_tracker: https://github.com/Devanshv17/genesis_ai_sdk/issues
