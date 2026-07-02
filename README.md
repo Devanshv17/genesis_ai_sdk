@@ -1,8 +1,27 @@
-# genesis_ai_sdk
+# Flutter AI SDK — Genesis AI
 
-**A universal Flutter SDK for building AI agents — local and cloud.**
+[![pub package](https://img.shields.io/pub/v/genesis_ai_sdk.svg)](https://pub.dev/packages/genesis_ai_sdk)
+[![pub points](https://img.shields.io/pub/points/genesis_ai_sdk)](https://pub.dev/packages/genesis_ai_sdk/score)
+[![likes](https://img.shields.io/pub/likes/genesis_ai_sdk)](https://pub.dev/packages/genesis_ai_sdk)
+[![Platform](https://img.shields.io/badge/platform-android%20%7C%20ios%20%7C%20macos%20%7C%20windows%20%7C%20linux%20%7C%20web-blue)](https://pub.dev/packages/genesis_ai_sdk)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-Add intelligent, tool-calling AI to any Flutter app in minutes. One clean API works across Gemini, OpenAI, Anthropic, Ollama (local server), and on-device Gemma models.
+**The universal Flutter AI SDK for building tool-calling AI agents, multi-step LLM pipelines, and intelligent on-device / cloud hybrid apps.**
+
+`genesis_ai_sdk` gives Flutter developers a single, clean API across 7 AI providers — Gemini, OpenAI, Anthropic, HuggingFace, Ollama, on-device Gemma, and GGUF (llama.cpp) — with zero boilerplate. Whether you need a cloud AI agent, a fully offline LLM, or a smart router that picks the right backend per request, this Flutter AI SDK has you covered.
+
+👉 **[View on pub.dev](https://pub.dev/packages/genesis_ai_sdk)** · [GitHub](https://github.com/Devanshv17/genesis_ai) · [PLATFORM_SETUP.md](PLATFORM_SETUP.md)
+
+---
+
+## Why use this Flutter AI SDK?
+
+- **One API, every provider** — swap Gemini for Ollama for on-device Gemma with one line
+- **True ReAct agent loop** — the agent reasons, calls tools, observes results, and repeats
+- **Per-call routing** — `PolicyRouter` routes each request cloud/on-device by your rules
+- **Multi-step flows** — `GenesisFlow` chains LLM calls into named, observable pipelines
+- **Production-ready safety** — PII redaction, rate limiting, input/output guards built-in
+- **Full offline support** — run Gemma or any GGUF model entirely on-device, no internet
 
 ---
 
@@ -10,10 +29,10 @@ Add intelligent, tool-calling AI to any Flutter app in minutes. One clean API wo
 
 | Feature | Description |
 |---|---|
-| 🧠 **ReAct loop** | Agent reasons → calls tools → observes results → repeats until done |
-| 🔌 **7 providers** | Gemini, OpenAI, Anthropic, HuggingFace (cloud), Ollama (local), on-device Gemma, on-device GGUF (llama.cpp) |
-| 🧭 **Per-call routing** | `PolicyRouter` — route each call cloud/on-device by your own rules (NEW in 0.2.0) |
-| 🔗 **Flows** | `GenesisFlow` — chain multi-step AI pipelines with named, observable steps (NEW in 0.2.0) |
+| 🧠 **ReAct agent loop** | Reasons → calls tools → observes → repeats until done |
+| 🔌 **7 AI providers** | Gemini, OpenAI, Anthropic, HuggingFace (cloud), Ollama (local server), on-device Gemma, on-device GGUF (llama.cpp) |
+| 🧭 **Per-call routing** | `PolicyRouter` — route each call cloud/on-device by your own rules *(NEW in 0.2.0)* |
+| 🔗 **AI flows** | `GenesisFlow` — chain multi-step AI pipelines with named, observable steps *(NEW in 0.2.0)* |
 | 🛠️ **Built-in tools** | Calculator, date/time, HTTP fetch, mock weather — zero config |
 | 🔧 **Custom tools** | Type-safe `GenesisTool.define()` with auto JSON Schema |
 | 💾 **Persistent memory** | `HiveMemoryStore` — history survives app restarts |
@@ -32,7 +51,7 @@ dependencies:
   genesis_ai_sdk: ^0.2.0
 ```
 
-Or, to use directly from source:
+Or directly from source:
 
 ```yaml
 dependencies:
@@ -44,7 +63,7 @@ dependencies:
 
 ---
 
-## Quick start
+## Quick start — Flutter AI agent in 10 lines
 
 ```dart
 import 'package:genesis_ai_sdk/genesis_ai_sdk.dart';
@@ -52,7 +71,6 @@ import 'package:genesis_ai_sdk/genesis_ai_sdk.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 1 — Register providers once
   await GenesisAI.init(
     providers: {
       'gemini': GeminiProvider(apiKey: 'YOUR_GEMINI_API_KEY'),
@@ -60,14 +78,12 @@ void main() async {
     defaultProviderKey: 'gemini',
   );
 
-  // 2 — Create an agent
   final agent = GenesisAgent(
     provider: GenesisAI.defaultProvider,
-    systemPrompt: 'You are a helpful assistant.',
+    systemPrompt: 'You are a helpful Flutter AI assistant.',
     tools: GenesisTools.all,   // calculator + dateTime + httpRequest + mockWeather
   );
 
-  // 3 — Chat
   final response = await agent.chat('What is 1337 * 42?');
   print(response.text); // → "The answer is 56154."
 }
@@ -75,7 +91,7 @@ void main() async {
 
 ---
 
-## Providers
+## AI Providers
 
 ### Gemini (Google)
 
@@ -111,13 +127,12 @@ AnthropicProvider(
 ```dart
 OllamaProvider(model: 'llama3.2')    // localhost:11434
 
-// Check if Ollama is up and the model is pulled:
 final status = await OllamaProvider(model: 'phi4').checkStatus();
 if (!status.isReady) print(status.reason);
 ```
 
-1. Install Ollama: <https://ollama.ai>
-2. Pull a model: `ollama pull llama3.2`
+1. Install: <https://ollama.ai>
+2. Pull: `ollama pull llama3.2`
 3. Ollama starts automatically — no extra config needed.
 
 ### On-device Gemma (Android / iOS / macOS / Windows)
@@ -125,7 +140,6 @@ if (!status.isReady) print(status.reason);
 ```dart
 import 'package:genesis_ai_sdk/src/providers/gemma_provider.dart';
 
-// Check the model exists on disk first
 final path = '/data/user/0/com.example.app/files/gemma-3n.task';
 if (await GemmaModelManager.isDownloaded(path)) {
   final provider = GemmaProvider(
@@ -135,7 +149,6 @@ if (await GemmaModelManager.isDownloaded(path)) {
   );
 }
 
-// Download URL helper
 final url = GemmaModelManager.downloadUrl('gemma-3n-e2b-it');
 final sizeMb = GemmaModelManager.approximateSizeMb('gemma-3n-e2b-it'); // 1100
 ```
@@ -143,18 +156,14 @@ final sizeMb = GemmaModelManager.approximateSizeMb('gemma-3n-e2b-it'); // 1100
 Supported model IDs: `gemma-3n-e2b-it`, `gemma-3n-e4b-it`, `gemma-3-1b-it`,
 `function-gemma-270m`, `phi-4-mini`, `qwen3-0.6b`, `smollm-135m`.
 
-> **Note:** `GemmaProvider` is not exported from the main barrel because
-> `flutter_gemma` uses `dart:ffi` which breaks web builds. Import it directly
-> from `package:genesis_ai_sdk/src/providers/gemma_provider.dart` and guard
-> the usage with `if (!kIsWeb)`.
+> `GemmaProvider` uses `dart:ffi` — import it directly and guard with `if (!kIsWeb)`.
 
 ### HuggingFace Inference (cloud — any HF model, no download)
 
 ```dart
-// Any public model on HuggingFace — no download or conversion needed:
 final provider = HFInferenceProvider(
   modelId: 'Qwen/Qwen2.5-0.5B-Instruct',
-  apiToken: 'hf_xxxx',   // free token at huggingface.co/settings/tokens
+  apiToken: 'hf_xxxx',   // free at huggingface.co/settings/tokens
 );
 
 final agent = GenesisHub.fromHFCloud(
@@ -162,10 +171,7 @@ final agent = GenesisHub.fromHFCloud(
   apiToken: 'hf_xxxx',
   systemPrompt: 'You are a helpful assistant.',
 );
-final reply = await agent.chat('Explain gravity in one sentence.');
 ```
-
-**Backends** (set via `backend:` parameter):
 
 | Backend | Best for |
 |---|---|
@@ -173,26 +179,23 @@ final reply = await agent.chat('Explain gravity in one sentence.');
 | `nebius` | Large / quantised models |
 | `together` | Llama, Mixtral, popular OSS |
 | `sambanova` | Very fast Llama inference |
-| `hfNative` | HF's own GPU fleet (small curated list) |
+| `hfNative` | HF's own GPU fleet |
 
 ### On-device GGUF / llama.cpp (Android / macOS / Windows / Linux)
 
 ```dart
 import 'package:genesis_ai_sdk/src/providers/llama_cpp_provider.dart';
 
-// Load a local .gguf model file:
 final provider = LlamaCppProvider(
   modelPath: '/path/to/model.gguf',
-  nCtx: 2048,    // context window
-  nThreads: 4,   // CPU threads
+  nCtx: 2048,
+  nThreads: 4,
 );
 
-// Or via GenesisHub — detects .gguf automatically:
+// Or auto-detect via GenesisHub:
 final agent = await GenesisHub.fromFile('/path/to/model.gguf');
 final reply = await agent.chat('What is the capital of France?');
 ```
-
-Get the correct writable model directory on every platform:
 
 ```dart
 final modelsDir = await GenesisHub.platformModelsDir();
@@ -201,9 +204,7 @@ final modelsDir = await GenesisHub.platformModelsDir();
 // Windows/Linux: <ApplicationSupport>/genesis_models
 ```
 
-> **Note:** `LlamaCppProvider` requires `dart:ffi` and is not in the main barrel.
-> Import it directly: `import 'package:genesis_ai_sdk/src/providers/llama_cpp_provider.dart';`
-> GGUF on iOS requires building `llama.cpp` as an xcframework — see `PLATFORM_SETUP.md`.
+> `LlamaCppProvider` requires `dart:ffi`. Import it directly. GGUF on iOS needs `llama.cpp` as an xcframework — see `PLATFORM_SETUP.md`.
 
 ---
 
@@ -220,8 +221,7 @@ final weatherTool = GenesisTool.define(
   execute: (args) async {
     final city = args['city'] as String;
     final unit = args['unit'] as String? ?? 'celsius';
-    final data = await fetchWeather(city, unit);   // your implementation
-    return data.toJson();
+    return (await fetchWeather(city, unit)).toJson();
   },
 );
 
@@ -243,29 +243,24 @@ final agent = GenesisAgent(
 | `ToolParam.array(name, desc, items)` | `array` |
 | `ToolParam.object(name, desc, props)` | `object` |
 
-All constructors accept an optional `required` flag (default `true`).
-
 ---
 
-## Memory (persistent history)
+## Persistent memory
 
 ```dart
-// Once at app startup
 await HiveMemoryStore.initialize();
 
-// Per agent
 final agent = GenesisAgent(
   provider: myProvider,
   memory: HiveMemoryStore(),
-  sessionId: 'user_${userId}',   // each user gets their own history
+  sessionId: 'user_${userId}',
 );
 
-// Later
 await agent.clearHistory();
 final history = await agent.getHistory();
 ```
 
-For ephemeral (in-process) memory, use the default `InMemoryStore()`.
+Use `InMemoryStore()` (default) for ephemeral memory.
 
 ---
 
@@ -282,8 +277,6 @@ await for (final chunk in agent.chatStream('Tell me a story.')) {
 ---
 
 ## ReAct step callbacks
-
-Watch the agent think in real time — great for showing a "thinking…" UI:
 
 ```dart
 final response = await agent.chat(
@@ -309,44 +302,20 @@ final response = await agent.chat(
 
 ## Safety layer
 
-### Input guard
-
 ```dart
-// Default: blocks empty messages and messages > 8 000 chars,
-// strips control characters.
+// Input guard — blocks empty, too-long, and injected inputs
 final guard = InputGuard();
-final clean = guard.validate(userInput);   // throws InputGuardException if invalid
-
-// Add prompt-injection detection (higher false-positive risk):
+final clean = guard.validate(userInput);
 final strict = InputGuard.withInjectionDetection();
-```
 
-### Output guard
-
-```dart
-// Default: truncates at 32 000 chars.
-final guard = OutputGuard();
-
-// With PII redaction (emails, phones, credit cards, SSNs):
+// Output guard — PII redaction, truncation, blocklists
 final safe = OutputGuard.withPiiRedaction();
 final text = safe.process(rawLlmText);
 
-// With a custom blocklist:
-final branded = OutputGuard(extraRules: [
-  BlocklistOutputRule(blocklist: ['competitor_name']),
-]);
-```
-
-### Rate limiter
-
-```dart
+// Rate limiter + concurrency cap
 final limiter = RateLimiter(maxRequests: 20, windowDuration: Duration(minutes: 1));
-
-// Throws RateLimitException if exceeded:
 limiter.check(sessionId);
-final response = await agent.chat(message);
 
-// Concurrency limiter — cap parallel requests per user
 final concurrency = ConcurrencyLimiter(maxConcurrent: 3);
 final response = await concurrency.run(userId, () => agent.chat(message));
 ```
@@ -356,13 +325,13 @@ final response = await concurrency.run(userId, () => agent.chat(message));
 ## Smart routing & fallback
 
 ```dart
-// Falls back to secondary if primary fails:
+// Fallback to secondary if primary fails
 final router = SmartRouter(
   primary: GeminiProvider(apiKey: '...'),
   secondary: OllamaProvider(model: 'llama3.2'),
 );
 
-// Anonymise sensitive fields before sending to the cloud:
+// Strip PII before sending to the cloud
 final privacyRouter = PrivacyRouter(
   cloudProvider: OpenAIProvider(apiKey: '...'),
   sensitiveKeys: ['email', 'phone', 'ssn'],
@@ -371,16 +340,14 @@ final privacyRouter = PrivacyRouter(
 
 ---
 
-## Per-call routing (NEW in 0.2.0)
+## Per-call routing — PolicyRouter *(NEW in 0.2.0)*
 
-`SmartRouter` picks a backend once; `PolicyRouter` decides **per call** —
-so cheap/private/offline-friendly tasks run on-device and only the hard
-ones hit the cloud. You define the policy; the agent code never changes:
+`SmartRouter` picks one backend at init; `PolicyRouter` re-decides **on every call** — cheap / private / offline-friendly tasks stay on-device, hard reasoning goes to the cloud. Your agent call sites never change:
 
 ```dart
 final router = PolicyRouter(
   providers: {
-    'local': GemmaProvider(...),          // private, free
+    'local': GemmaProvider(...),          // private, free, offline
     'cloud': GeminiProvider(apiKey: ''),  // smart, paid
   },
   defaultProvider: 'cloud',
@@ -389,18 +356,15 @@ final router = PolicyRouter(
     RouteRules.shortInput(useProvider: 'local'),  // small tasks stay local
     RouteRules.needsTools(useProvider: 'cloud'),  // tool calls need cloud
   ],
-  onRoute: (d) => print(d), // log/badge every decision
+  onRoute: (d) => print(d), // log / show a "🔒 local" badge in your UI
 );
 
 final agent = GenesisAgent(provider: router); // call sites never change
 ```
 
-Built-in rules: `sensitive()`, `shortInput()`, `longContext()`,
-`needsTools()`, `streaming()`, `custom()` — or write any predicate over
-`RouteContext`. A failing routed provider falls back to the default
-automatically.
+Built-in rules: `sensitive()`, `shortInput()`, `longContext()`, `needsTools()`, `streaming()`, `custom()`.
 
-Need a one-off override instead of a policy? Force a provider per call:
+Need a one-off override? Force a provider per call:
 
 ```dart
 await agent.chat('My salary is 95k, plan my budget', provider: localGemma);
@@ -408,25 +372,22 @@ await agent.chat('My salary is 95k, plan my budget', provider: localGemma);
 
 ---
 
-## Flows — multi-step pipelines (NEW in 0.2.0)
+## GenesisFlow — multi-step AI pipelines *(NEW in 0.2.0)*
 
-Chain agent calls, tool runs, and parsing into one named, observable,
-type-safe pipeline (inspired by Genkit's flows):
+Chain agent calls, tool runs, and transforms into one named, type-safe, observable pipeline (inspired by Genkit flows, built Flutter-first):
 
 ```dart
 final tripPlanner = GenesisFlow.start<String>('trip-planner')
     .then<String>('extract-city', (input, ctx) async {
-      final r = await extractor.chat('Extract the city: $input');
-      return r.text;
+      return (await extractor.chat('Extract the city: $input')).text;
     })
     .then<String>('fetch-weather', (city, ctx) async {
-      ctx.set('city', city);                  // share state between steps
+      ctx.set('city', city);
       return await weatherApi.forecast(city);
     })
     .then<String>('write-plan', (weather, ctx) async {
       final city = ctx.get<String>('city');
-      final r = await planner.chat('Plan a day in $city. Weather: $weather');
-      return r.text;
+      return (await planner.chat('Plan a day in $city. Weather: $weather')).text;
     });
 
 final plan = await tripPlanner.run(
@@ -435,8 +396,7 @@ final plan = await tripPlanner.run(
 );
 ```
 
-Failures throw `FlowException` carrying the flow + step name, so logs point
-straight at the failing stage.
+Failures throw `FlowException(flowName, stepName, cause)` — logs point straight at the failing stage.
 
 ---
 
@@ -456,10 +416,9 @@ final resilient = RetryProvider(
 
 ```dart
 final config = ModelRegistry.get('gemini-2.0-flash');
-print(config.contextWindow);   // 1048576
+print(config.contextWindow);          // 1048576
 print(config.inputCostPer1MTokens);  // 0.075
 
-// Fit conversation history to a model's context window:
 final manager = ContextManager.forModel('gemini-2.0-flash');
 final fitted = manager.fit(messages);
 ```
@@ -471,22 +430,21 @@ final fitted = manager.fit(messages);
 ```dart
 await GenesisAI.init(
   providers: { ... },
-  logLevel: LogLevel.debug,   // verbose during development
+  logLevel: LogLevel.debug,
 );
 
-// Or custom handler (send to Crashlytics, etc.):
 GenesisLogger.setHandler((level, message, [error]) {
   Crashlytics.instance.log('[$level] $message');
 });
 ```
 
-Default log level is `LogLevel.none` — completely silent in production.
+Default: `LogLevel.none` — silent in production.
 
 ---
 
 ## Platform support
 
-| Platform | Cloud (Gemini/OpenAI/Anthropic/HF) | Ollama | On-device Gemma (`.litertlm` / `.task`) | On-device GGUF (llama.cpp) |
+| Platform | Cloud (Gemini / OpenAI / Anthropic / HF) | Ollama | On-device Gemma | On-device GGUF |
 |---|:---:|:---:|:---:|:---:|
 | Android | ✅ | ✅ | ✅ | ✅ |
 | iOS | ✅ | ✅ | ✅ | ⚠️ xcframework needed |
@@ -495,14 +453,14 @@ Default log level is `LogLevel.none` — completely silent in production.
 | Web | ✅ | ❌ | ❌ | ❌ |
 | Linux | ✅ | ✅ | ❌ | ✅ |
 
-> See `PLATFORM_SETUP.md` in the repo for per-platform native setup instructions.
+See [PLATFORM_SETUP.md](PLATFORM_SETUP.md) for native setup instructions per platform.
 
 ---
 
 ## Roadmap
 
 - `genesis_ai_ui` — dynamic Flutter UI renderer driven by AI responses (A2UI)
-- `genesis_ai_tools` — real-world tools: device location, camera, clipboard, contacts
+- `genesis_ai_tools` — device location, camera, clipboard, contacts tools
 - More providers: Mistral, Groq, Cohere, local llama.cpp server
 - Semantic memory with vector search
 
@@ -510,4 +468,4 @@ Default log level is `LogLevel.none` — completely silent in production.
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE).
