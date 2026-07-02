@@ -1,9 +1,24 @@
 # Changelog
 
-All notable changes to `genesis_ai_sdk` will be documented in this file.
+All notable changes to `flutter_agents` will be documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [1.0.0] — 2026-06-12
+
+### Changed
+- **Package renamed** from `genesis_ai_sdk` to `flutter_agents` — new import:
+  `import 'package:flutter_agents/flutter_agents.dart';`
+- Version bumped to 1.0.0 to reflect production-ready stability (311 tests, 160/160 pub.dev score)
+
+### Roadmap (upcoming packages under the flutter_agents umbrella)
+- `flutter_agents_graph` — LangGraph-style stateful agent graphs with cycles and checkpointing
+- `flutter_agents_ui` — Flutter widgets for agent step visualisation and human-in-the-loop gates
+- `flutter_agents_tools` — Pre-built real-world tools (location, camera, clipboard, contacts)
+- `flutter_agents_memory` — Semantic / vector memory for long-running agents
 
 ---
 

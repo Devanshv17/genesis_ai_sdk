@@ -1,16 +1,16 @@
-# Flutter AI SDK — Genesis AI
+# flutter_agents — Flutter AI Agent SDK
 
-[![pub package](https://img.shields.io/pub/v/genesis_ai_sdk.svg)](https://pub.dev/packages/genesis_ai_sdk)
-[![pub points](https://img.shields.io/pub/points/genesis_ai_sdk)](https://pub.dev/packages/genesis_ai_sdk/score)
-[![likes](https://img.shields.io/pub/likes/genesis_ai_sdk)](https://pub.dev/packages/genesis_ai_sdk)
-[![Platform](https://img.shields.io/badge/platform-android%20%7C%20ios%20%7C%20macos%20%7C%20windows%20%7C%20linux%20%7C%20web-blue)](https://pub.dev/packages/genesis_ai_sdk)
+[![pub package](https://img.shields.io/pub/v/flutter_agents.svg)](https://pub.dev/packages/flutter_agents)
+[![pub points](https://img.shields.io/pub/points/flutter_agents)](https://pub.dev/packages/flutter_agents/score)
+[![likes](https://img.shields.io/pub/likes/flutter_agents)](https://pub.dev/packages/flutter_agents)
+[![Platform](https://img.shields.io/badge/platform-android%20%7C%20ios%20%7C%20macos%20%7C%20windows%20%7C%20linux%20%7C%20web-blue)](https://pub.dev/packages/flutter_agents)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-**The universal Flutter AI SDK for building tool-calling AI agents, multi-step LLM pipelines, and intelligent on-device / cloud hybrid apps.**
+**The Flutter AI agent SDK — build tool-calling AI agents, multi-step LLM pipelines, and on-device / cloud hybrid apps in Flutter.**
 
-`genesis_ai_sdk` gives Flutter developers a single, clean API across 7 AI providers — Gemini, OpenAI, Anthropic, HuggingFace, Ollama, on-device Gemma, and GGUF (llama.cpp) — with zero boilerplate. Whether you need a cloud AI agent, a fully offline LLM, or a smart router that picks the right backend per request, this Flutter AI SDK has you covered.
+`flutter_agents` gives Flutter developers a single, clean API across 7 AI providers — Gemini, OpenAI, Anthropic, HuggingFace, Ollama, on-device Gemma, and GGUF (llama.cpp). ReAct reasoning loop, per-call routing, observable multi-step flows, persistent memory, and a full safety layer — all Flutter-first, no backend required.
 
-👉 **[View on pub.dev](https://pub.dev/packages/genesis_ai_sdk)** · [GitHub](https://github.com/Devanshv17/genesis_ai) · [PLATFORM_SETUP.md](PLATFORM_SETUP.md)
+👉 **[View on pub.dev](https://pub.dev/packages/flutter_agents)** · [GitHub](https://github.com/Devanshv17/flutter_agents) · [PLATFORM_SETUP.md](PLATFORM_SETUP.md)
 
 ---
 
@@ -48,7 +48,7 @@
 
 ```yaml
 dependencies:
-  genesis_ai_sdk: ^0.2.0
+  flutter_agents: ^1.0.0
 ```
 
 Or directly from source:
@@ -57,8 +57,7 @@ Or directly from source:
 dependencies:
   genesis_ai_sdk:
     git:
-      url: https://github.com/Devanshv17/genesis_ai
-      path: packages/genesis_ai
+      url: https://github.com/Devanshv17/flutter_agents
 ```
 
 ---

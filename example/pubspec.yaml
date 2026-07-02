@@ -1,5 +1,5 @@
-name: genesis_ai_sdk_example
-description: Comprehensive example app for genesis_ai_sdk.
+name: flutter_agents_example
+description: Comprehensive example app for flutter_agents.
 publish_to: none
 version: 1.0.0
 
@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  genesis_ai_sdk:
+  flutter_agents:
     path: ../
 
 dev_dependencies:

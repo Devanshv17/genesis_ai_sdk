@@ -1,8 +1,8 @@
-/// Genesis AI — Universal Flutter SDK for local and cloud AI agents.
+/// flutter_agents — Build AI agents in Flutter. Local and cloud, one API.
 ///
 /// ## Quick start
 /// ```dart
-/// import 'package:genesis_ai_sdk/genesis_ai_sdk.dart';
+/// import 'package:flutter_agents/flutter_agents.dart';
 ///
 /// // 1. Register your providers (once at startup)
 /// await GenesisAI.init(
@@ -53,10 +53,10 @@ export 'src/providers/retry_provider.dart';
 // GemmaProvider / GemmaModelManager / ModelDownloadException are excluded from
 // the web-safe barrel because flutter_gemma pulls in dart:ffi which breaks
 // web builds.  Import them directly on native targets:
-//   import 'package:genesis_ai_sdk/src/providers/gemma_provider.dart';
+//   import 'package:flutter_agents/src/providers/gemma_provider.dart';
 //
 // LlamaCppProvider is similarly excluded (requires llama_cpp_dart + FFI):
-//   import 'package:genesis_ai_sdk/src/providers/llama_cpp_provider.dart';
+//   import 'package:flutter_agents/src/providers/llama_cpp_provider.dart';
 
 // ── Memory ───────────────────────────────────────────────────────────────────
 export 'src/memory/memory_store.dart';
@@ -85,8 +85,8 @@ export 'src/agent/genesis_agent.dart';
 // ModelFormat and HFHub are web-safe (pure Dart / http).
 // UniversalModelManager and GenesisHub use dart:io so they are excluded from
 // web builds — import them directly when targeting native:
-//   import 'package:genesis_ai_sdk/src/hub/genesis_hub.dart';
-//   import 'package:genesis_ai_sdk/src/hub/universal_model_manager.dart';
+//   import 'package:flutter_agents/src/hub/genesis_hub.dart';
+//   import 'package:flutter_agents/src/hub/universal_model_manager.dart';
 export 'src/hub/model_format.dart';   // ModelFormat enum + UnsupportedFormatException
 export 'src/hub/hf_hub.dart';         // HFHub, HFFile, HFModelInfo, HFException
 export 'src/providers/hf_inference_provider.dart'; // HFInferenceProvider (cloud)

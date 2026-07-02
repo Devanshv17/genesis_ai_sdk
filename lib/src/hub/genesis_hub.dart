@@ -1,6 +1,6 @@
 /// GenesisHub — one-stop factory for creating AI agents from any source.
 ///
-/// This is the single highest-level API in genesis_ai_sdk. Give it a URL,
+/// This is the single highest-level API in flutter_agents. Give it a URL,
 /// a HuggingFace repo, an Ollama model name, or a local file path — it
 /// downloads the model (if needed), detects the format, picks the right
 /// provider, and returns a ready-to-use [GenesisAgent].
@@ -349,7 +349,7 @@ abstract class GenesisHub {
       throw UnsupportedError(
         'GGUF file detected at "$path".\n'
         'Use LlamaCppProvider directly (it requires llama_cpp_dart):\n\n'
-        "  import 'package:genesis_ai_sdk/src/providers/llama_cpp_provider.dart';\n\n"
+        "  import 'package:flutter_agents/src/providers/llama_cpp_provider.dart';\n\n"
         '  final provider = LlamaCppProvider(modelPath: "$path");\n'
         '  final agent = GenesisHub.fromProvider(provider: provider);\n',
       );

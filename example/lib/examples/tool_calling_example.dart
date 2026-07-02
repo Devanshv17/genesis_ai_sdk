@@ -7,7 +7,7 @@
 library;
 
 import 'package:flutter/material.dart';
-import 'package:genesis_ai_sdk/genesis_ai_sdk.dart';
+import 'package:flutter_agents/flutter_agents.dart';
 
 const _geminiKey = String.fromEnvironment('GEMINI_KEY', defaultValue: '');
 

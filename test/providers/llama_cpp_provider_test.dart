@@ -17,10 +17,10 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:llama_cpp_dart/llama_cpp_dart.dart' show Llama;
 import 'package:flutter/foundation.dart' show debugPrint;
-import 'package:genesis_ai_sdk/src/core/message.dart';
-import 'package:genesis_ai_sdk/src/providers/llama_cpp_provider.dart';
-import 'package:genesis_ai_sdk/src/providers/llm_provider.dart' show TextResult;
-import 'package:genesis_ai_sdk/src/hub/genesis_hub.dart';
+import 'package:flutter_agents/src/core/message.dart';
+import 'package:flutter_agents/src/providers/llama_cpp_provider.dart';
+import 'package:flutter_agents/src/providers/llm_provider.dart' show TextResult;
+import 'package:flutter_agents/src/hub/genesis_hub.dart';
 
 // ── Paths ──────────────────────────────────────────────────────────────────
 

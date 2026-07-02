@@ -1,5 +1,5 @@
 // ignore_for_file: unused_element
-/// Developer reference: real-world tool patterns for genesis_ai_sdk.
+/// Developer reference: real-world tool patterns for flutter_agents.
 ///
 /// Copy-paste any example as your starting point.
 /// All examples compile and use only the public SDK API.
@@ -17,7 +17,7 @@
 /// 10. Tool composed of other tools    [_composedTool]
 library;
 
-import 'package:genesis_ai_sdk/genesis_ai_sdk.dart';
+import 'package:flutter_agents/flutter_agents.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 1. Simple lookup tool

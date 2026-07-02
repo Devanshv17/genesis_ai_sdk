@@ -5,8 +5,8 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:genesis_ai_sdk/src/hub/hf_hub.dart';
-import 'package:genesis_ai_sdk/src/hub/model_format.dart';
+import 'package:flutter_agents/src/hub/hf_hub.dart';
+import 'package:flutter_agents/src/hub/model_format.dart';
 
 void main() {
   // ── downloadUrl ──────────────────────────────────────────────────────────
