@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../core/message.dart';
-import '../tools/genesis_tool.dart';
+import '../tools/agentic_tool.dart';
 import 'llm_provider.dart';
 
 /// LLM provider for OpenAI (GPT-4o, GPT-4o-mini, etc.) via REST API.
@@ -48,7 +48,7 @@ class OpenAIProvider extends LlmProvider {
     }).toList();
   }
 
-  List<Map<String, dynamic>> _buildTools(List<GenesisTool> tools) {
+  List<Map<String, dynamic>> _buildTools(List<AgenticTool> tools) {
     return tools
         .map((t) => {
               'type': 'function',
@@ -71,7 +71,7 @@ class OpenAIProvider extends LlmProvider {
   @override
   Future<ProviderResult> complete({
     required List<Message> messages,
-    List<GenesisTool> tools = const [],
+    List<AgenticTool> tools = const [],
     double temperature = 0.7,
   }) async {
     final body = <String, dynamic>{

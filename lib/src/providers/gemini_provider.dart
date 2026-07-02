@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../core/message.dart';
-import '../tools/genesis_tool.dart';
+import '../tools/agentic_tool.dart';
 import 'llm_provider.dart';
 
 /// LLM provider for Google Gemini via REST API.
@@ -33,7 +33,7 @@ class GeminiProvider extends LlmProvider {
   /// Convert our Message list to Gemini's `contents` + optional `systemInstruction`.
   Map<String, dynamic> _buildRequestBody(
     List<Message> messages, {
-    List<GenesisTool> tools = const [],
+    List<AgenticTool> tools = const [],
     double temperature = 0.7,
   }) {
     String? systemText;
@@ -116,7 +116,7 @@ class GeminiProvider extends LlmProvider {
   @override
   Future<ProviderResult> complete({
     required List<Message> messages,
-    List<GenesisTool> tools = const [],
+    List<AgenticTool> tools = const [],
     double temperature = 0.7,
   }) async {
     final body = _buildRequestBody(messages, tools: tools, temperature: temperature);

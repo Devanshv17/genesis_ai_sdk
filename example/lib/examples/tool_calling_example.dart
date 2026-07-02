@@ -12,7 +12,7 @@ import 'package:flutter_agentic/flutter_agentic.dart';
 const _geminiKey = String.fromEnvironment('GEMINI_KEY', defaultValue: '');
 
 /// Fake weather tool — replace `_fetchWeather` with a real API call.
-final _weatherTool = GenesisTool.define(
+final _weatherTool = AgenticTool.define(
   name: 'get_weather',
   description: 'Returns current weather conditions for a city.',
   params: {
@@ -56,11 +56,11 @@ class _ToolCallingExampleState extends State<ToolCallingExample> {
   bool _loading = false;
   String? _error;
 
-  late final GenesisAgent _agent = GenesisAgent(
+  late final AgenticAgent _agent = AgenticAgent(
     provider: GeminiProvider(apiKey: _geminiKey),
     systemPrompt: 'You are a helpful assistant. Use tools when needed.',
     tools: [
-      GenesisTools.calculator, // built-in
+      AgenticTools.calculator, // built-in
       _weatherTool,            // custom
     ],
   );

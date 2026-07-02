@@ -4,7 +4,7 @@ import '../core/agent_response.dart';
 import '../core/agent_step.dart';
 import '../core/message.dart';
 import '../providers/llm_provider.dart';
-import '../tools/genesis_tool.dart';
+import '../tools/agentic_tool.dart';
 
 /// Runs the ReAct (Reasoning + Acting) loop:
 ///   Think → (optionally) call a tool → observe result → repeat → final answer.
@@ -14,7 +14,7 @@ import '../tools/genesis_tool.dart';
 ///   - [maxIterations] is reached (safety limit).
 class ReActExecutor {
   final LlmProvider provider;
-  final List<GenesisTool> tools;
+  final List<AgenticTool> tools;
   final int maxIterations;
 
   const ReActExecutor({
@@ -58,7 +58,7 @@ class ReActExecutor {
           onStep?.call(callStep);
 
           // 2. Find the tool.
-          final tool = tools.cast<GenesisTool?>().firstWhere(
+          final tool = tools.cast<AgenticTool?>().firstWhere(
                 (t) => t?.name == call.toolName,
                 orElse: () => null,
               );

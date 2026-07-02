@@ -1,21 +1,21 @@
-/// Log levels for [GenesisLogger].
+/// Log levels for [AgenticLogger].
 enum LogLevel { debug, info, warning, error, none }
 
 /// Structured logger for the Genesis AI SDK.
 ///
 /// By default, nothing is logged. Enable during development:
 /// ```dart
-/// GenesisLogger.level = LogLevel.debug;
+/// AgenticLogger.level = LogLevel.debug;
 /// ```
 ///
 /// Supply a custom handler to integrate with your own logging:
 /// ```dart
-/// GenesisLogger.handler = (level, tag, message) {
+/// AgenticLogger.handler = (level, tag, message) {
 ///   FirebaseCrashlytics.instance.log('[$tag] $message');
 /// };
 /// ```
-class GenesisLogger {
-  GenesisLogger._();
+class AgenticLogger {
+  AgenticLogger._();
 
   /// Minimum level to log. Messages below this level are silently dropped.
   /// Defaults to [LogLevel.none] (silent) for production safety.
@@ -49,7 +49,7 @@ class GenesisLogger {
         LogLevel.none => '',
       };
       // ignore: avoid_print
-      print('$prefix [genesis_ai/$tag] $message');
+      print('$prefix [flutter_agentic/$tag] $message');
     }
   }
 }

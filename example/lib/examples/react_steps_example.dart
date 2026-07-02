@@ -25,10 +25,10 @@ class _ReactStepsExampleState extends State<ReactStepsExample> {
   bool _loading = false;
   String? _error;
 
-  late final GenesisAgent _agent = GenesisAgent(
+  late final AgenticAgent _agent = AgenticAgent(
     provider: GeminiProvider(apiKey: _geminiKey),
     systemPrompt: 'You are a helpful assistant.',
-    tools: [GenesisTools.calculator, GenesisTools.dateTime],
+    tools: [AgenticTools.calculator, AgenticTools.dateTime],
   );
 
   Future<void> _run() async {

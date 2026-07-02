@@ -1,4 +1,4 @@
-import '../core/genesis_logger.dart';
+import '../core/agentic_logger.dart';
 import 'tool_args.dart';
 import 'tool_context.dart';
 import 'tool_param.dart';
@@ -10,7 +10,7 @@ typedef ToolExecutorFn = Future<Map<String, dynamic>> Function(
     Map<String, dynamic> args);
 
 /// Rich executor — receives [ToolArgs] and [ToolContext], returns [ToolResult].
-/// Used with [GenesisTool.withContext].
+/// Used with [AgenticTool.withContext].
 typedef ToolExecutorWithContextFn = Future<ToolResult> Function(
     ToolArgs args, ToolContext ctx);
 
@@ -21,7 +21,7 @@ typedef ToolExecutorWithContextFn = Future<ToolResult> Function(
 ///
 /// ### 1 — Simple (basic use cases)
 /// ```dart
-/// final greet = GenesisTool.define(
+/// final greet = AgenticTool.define(
 ///   name: 'greet',
 ///   description: 'Greets a person by name.',
 ///   params: {
@@ -34,7 +34,7 @@ typedef ToolExecutorWithContextFn = Future<ToolResult> Function(
 /// ### 2 — Rich context (recommended for real tools)
 /// Gets typed arg access, structured error returns, and logging.
 /// ```dart
-/// final searchTool = GenesisTool.withContext(
+/// final searchTool = AgenticTool.withContext(
 ///   name: 'search_products',
 ///   description: 'Searches the product catalogue.',
 ///   params: {
@@ -68,7 +68,7 @@ typedef ToolExecutorWithContextFn = Future<ToolResult> Function(
 /// ### 3 — Pipeline (multi-step sequential processes)
 /// Each step receives the output of the previous step.
 /// ```dart
-/// final analysisTool = GenesisTool.pipeline(
+/// final analysisTool = AgenticTool.pipeline(
 ///   name: 'analyse_document',
 ///   description: 'Fetches, extracts, and summarises a document.',
 ///   params: {
@@ -104,7 +104,7 @@ typedef ToolExecutorWithContextFn = Future<ToolResult> Function(
 ///   ],
 /// );
 /// ```
-class GenesisTool {
+class AgenticTool {
   /// Snake_case name. Must be unique within an agent. The LLM uses this.
   final String name;
 
@@ -127,14 +127,14 @@ class GenesisTool {
   ///
   /// Use this when you need schema features not covered by [ToolParam], or when
   /// migrating existing JSON Schema definitions.
-  const GenesisTool({
+  const AgenticTool({
     required this.name,
     required this.description,
     required this.parameters,
     required this.execute,
   }) : _typedParams = null;
 
-  GenesisTool._typed({
+  AgenticTool._typed({
     required this.name,
     required this.description,
     required this.parameters,
@@ -149,7 +149,7 @@ class GenesisTool {
   /// The JSON Schema is auto-generated — no manual map writing needed.
   ///
   /// ```dart
-  /// GenesisTool.define(
+  /// AgenticTool.define(
   ///   name: 'get_stock_price',
   ///   description: 'Returns the current stock price for a ticker symbol.',
   ///   params: {
@@ -162,13 +162,13 @@ class GenesisTool {
   ///   },
   /// );
   /// ```
-  factory GenesisTool.define({
+  factory AgenticTool.define({
     required String name,
     required String description,
     required Map<String, ToolParam> params,
     required ToolExecutorFn execute,
   }) {
-    return GenesisTool._typed(
+    return AgenticTool._typed(
       name: name,
       description: description,
       parameters: buildParametersSchema(params),
@@ -188,7 +188,7 @@ class GenesisTool {
   /// **Prefer this over [define] for any non-trivial tool.**
   ///
   /// ```dart
-  /// GenesisTool.withContext(
+  /// AgenticTool.withContext(
   ///   name: 'send_message',
   ///   description: 'Sends a message to a user in the system.',
   ///   params: {
@@ -212,14 +212,14 @@ class GenesisTool {
   ///   },
   /// );
   /// ```
-  factory GenesisTool.withContext({
+  factory AgenticTool.withContext({
     required String name,
     required String description,
     required Map<String, ToolParam> params,
     required ToolExecutorWithContextFn execute,
     String? sessionId,
   }) {
-    return GenesisTool._typed(
+    return AgenticTool._typed(
       name: name,
       description: description,
       parameters: buildParametersSchema(params),
@@ -231,10 +231,10 @@ class GenesisTool {
           sessionId: sessionId,
           logger: (lvl, message) {
               switch (lvl) {
-                case 'debug':   GenesisLogger.debug('Tool:$name', message);
-                case 'warn':    GenesisLogger.warning('Tool:$name', message);
-                case 'error':   GenesisLogger.error('Tool:$name', message);
-                default:        GenesisLogger.info('Tool:$name', message);
+                case 'debug':   AgenticLogger.debug('Tool:$name', message);
+                case 'warn':    AgenticLogger.warning('Tool:$name', message);
+                case 'error':   AgenticLogger.error('Tool:$name', message);
+                default:        AgenticLogger.info('Tool:$name', message);
               }
             },
         );
@@ -242,7 +242,7 @@ class GenesisTool {
           final result = await execute(args, ctx);
           return result.toMap();
         } catch (e, st) {
-          GenesisLogger.error('Tool:$name', 'Unexpected error: $e\n$st');
+          AgenticLogger.error('Tool:$name', 'Unexpected error: $e\n$st');
           return {'error': 'Tool execution failed: $e'};
         }
       },
@@ -260,7 +260,7 @@ class GenesisTool {
   /// If any step throws, the pipeline stops and returns the error.
   ///
   /// ```dart
-  /// GenesisTool.pipeline(
+  /// AgenticTool.pipeline(
   ///   name: 'process_order',
   ///   description: 'Validates, charges, and confirms an order.',
   ///   params: {
@@ -294,14 +294,14 @@ class GenesisTool {
   ///   ],
   /// );
   /// ```
-  factory GenesisTool.pipeline({
+  factory AgenticTool.pipeline({
     required String name,
     required String description,
     required Map<String, ToolParam> params,
     required List<PipelineStep> steps,
   }) {
     assert(steps.isNotEmpty, 'Pipeline "$name" must have at least one step.');
-    return GenesisTool._typed(
+    return AgenticTool._typed(
       name: name,
       description: description,
       parameters: buildParametersSchema(params),
@@ -312,10 +312,10 @@ class GenesisTool {
           toolName: name,
           logger: (lvl, message) {
               switch (lvl) {
-                case 'debug':   GenesisLogger.debug('Pipeline:$name', message);
-                case 'warn':    GenesisLogger.warning('Pipeline:$name', message);
-                case 'error':   GenesisLogger.error('Pipeline:$name', message);
-                default:        GenesisLogger.info('Pipeline:$name', message);
+                case 'debug':   AgenticLogger.debug('Pipeline:$name', message);
+                case 'warn':    AgenticLogger.warning('Pipeline:$name', message);
+                case 'error':   AgenticLogger.error('Pipeline:$name', message);
+                default:        AgenticLogger.info('Pipeline:$name', message);
               }
             },
         );
@@ -323,17 +323,17 @@ class GenesisTool {
         for (int i = 0; i < steps.length; i++) {
           final step = steps[i];
           try {
-            GenesisLogger.debug('Pipeline:$name',
+            AgenticLogger.debug('Pipeline:$name',
                 'step ${i + 1}/${steps.length}: ${step.name}');
             final output = await step.run(state, ctx);
             // Merge step output into shared state
             state = {...state, ...output};
           } on ToolStepException catch (e) {
-            GenesisLogger.warning('Pipeline:$name',
+            AgenticLogger.warning('Pipeline:$name',
                 'step "${step.name}" failed: ${e.message}');
             return {'error': e.message, 'failed_step': step.name};
           } catch (e, st) {
-            GenesisLogger.error('Pipeline:$name',
+            AgenticLogger.error('Pipeline:$name',
                 'step "${step.name}" threw unexpectedly: $e\n$st');
             return {'error': 'Step "${step.name}" failed: $e', 'failed_step': step.name};
           }
@@ -353,7 +353,7 @@ class GenesisTool {
 
 // ── Pipeline helpers ──────────────────────────────────────────────────────────
 
-/// A single step in a [GenesisTool.pipeline].
+/// A single step in a [AgenticTool.pipeline].
 class PipelineStep {
   /// Short name for logging (e.g. `'fetch'`, `'validate'`, `'summarise'`).
   final String name;

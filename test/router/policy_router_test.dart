@@ -14,7 +14,7 @@ class _FakeProvider extends LlmProvider {
   @override
   Future<ProviderResult> complete({
     required List<Message> messages,
-    List<GenesisTool> tools = const [],
+    List<AgenticTool> tools = const [],
     double temperature = 0.7,
   }) async {
     completeCalls++;
@@ -80,7 +80,7 @@ void main() {
 
     test('needsTools matches only when tools present', () {
       final rule = RouteRules.needsTools(useProvider: 'cloud');
-      final tool = GenesisTool.define(
+      final tool = AgenticTool.define(
         name: 't',
         description: 'd',
         params: {},

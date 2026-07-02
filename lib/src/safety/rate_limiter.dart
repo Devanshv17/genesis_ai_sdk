@@ -95,7 +95,7 @@ class _Bucket {
 
 // ── ConcurrencyLimiter ───────────────────────────────────────────────────────
 
-/// Limits how many concurrent [GenesisAgent.chat] calls can run at once
+/// Limits how many concurrent [AgenticAgent.chat] calls can run at once
 /// per key.  Useful when running agents inside a server or background
 /// isolate and you want to prevent unbounded parallelism.
 ///

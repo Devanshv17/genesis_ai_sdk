@@ -5,7 +5,7 @@ import '../executor/react_executor.dart';
 import '../memory/in_memory_store.dart';
 import '../memory/memory_store.dart';
 import '../providers/llm_provider.dart';
-import '../tools/genesis_tool.dart';
+import '../tools/agentic_tool.dart';
 
 /// The main entry point for using Genesis AI.
 ///
@@ -14,7 +14,7 @@ import '../tools/genesis_tool.dart';
 ///
 /// Example:
 /// ```dart
-/// final agent = GenesisAgent(
+/// final agent = AgenticAgent(
 ///   provider: GeminiProvider(apiKey: 'YOUR_KEY'),
 ///   systemPrompt: 'You are a helpful assistant.',
 ///   tools: [weatherTool],
@@ -23,17 +23,17 @@ import '../tools/genesis_tool.dart';
 /// final response = await agent.chat('What is the weather in Mumbai?');
 /// print(response);
 /// ```
-class GenesisAgent {
+class AgenticAgent {
   final LlmProvider provider;
   final String systemPrompt;
-  final List<GenesisTool> tools;
+  final List<AgenticTool> tools;
   final MemoryStore memory;
   final String sessionId;
   final int maxIterations;
 
   late final ReActExecutor _executor;
 
-  GenesisAgent({
+  AgenticAgent({
     required this.provider,
     this.systemPrompt = 'You are a helpful assistant.',
     this.tools = const [],

@@ -139,34 +139,34 @@ void main() {
     });
   });
 
-  group('GenesisTools', () {
-    test('GenesisTools.all is non-empty', () {
-      expect(GenesisTools.all, isNotEmpty);
+  group('AgenticTools', () {
+    test('AgenticTools.all is non-empty', () {
+      expect(AgenticTools.all, isNotEmpty);
     });
 
-    test('GenesisTools.all includes calculator', () {
+    test('AgenticTools.all includes calculator', () {
       expect(
-        GenesisTools.all.any((t) => t.name == 'calculate'),
+        AgenticTools.all.any((t) => t.name == 'calculate'),
         isTrue,
       );
     });
 
-    test('GenesisTools.all includes get_datetime', () {
+    test('AgenticTools.all includes get_datetime', () {
       expect(
-        GenesisTools.all.any((t) => t.name == 'get_datetime'),
+        AgenticTools.all.any((t) => t.name == 'get_datetime'),
         isTrue,
       );
     });
 
-    test('GenesisTools.all includes http_request', () {
+    test('AgenticTools.all includes http_request', () {
       expect(
-        GenesisTools.all.any((t) => t.name == 'http_request'),
+        AgenticTools.all.any((t) => t.name == 'http_request'),
         isTrue,
       );
     });
 
     test('all tool names are unique', () {
-      final names = GenesisTools.all.map((t) => t.name).toList();
+      final names = AgenticTools.all.map((t) => t.name).toList();
       expect(names.toSet().length, names.length);
     });
   });

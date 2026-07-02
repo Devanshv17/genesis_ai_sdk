@@ -16,14 +16,14 @@ import 'memory_store.dart';
 /// void main() async {
 ///   WidgetsFlutterBinding.ensureInitialized();
 ///   await HiveMemoryStore.initialize();    // ← add this
-///   await GenesisAI.init(...);
+///   await AgenticAI.init(...);
 ///   runApp(const MyApp());
 /// }
 /// ```
 ///
 /// Then use it in your agent:
 /// ```dart
-/// final agent = GenesisAgent(
+/// final agent = AgenticAgent(
 ///   provider: myProvider,
 ///   memory: HiveMemoryStore(sessionId: 'user_123'),
 /// );

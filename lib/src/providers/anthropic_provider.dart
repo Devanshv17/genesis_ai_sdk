@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../core/message.dart';
-import '../tools/genesis_tool.dart';
+import '../tools/agentic_tool.dart';
 import 'llm_provider.dart';
 
 /// LLM provider for Anthropic Claude models via REST API.
@@ -47,7 +47,7 @@ class AnthropicProvider extends LlmProvider {
   /// uses 'user' / 'assistant' roles only (no 'system' in messages array).
   Map<String, dynamic> _buildBody(
     List<Message> messages, {
-    List<GenesisTool> tools = const [],
+    List<AgenticTool> tools = const [],
     double temperature = 0.7,
     bool stream = false,
   }) {
@@ -127,7 +127,7 @@ class AnthropicProvider extends LlmProvider {
   @override
   Future<ProviderResult> complete({
     required List<Message> messages,
-    List<GenesisTool> tools = const [],
+    List<AgenticTool> tools = const [],
     double temperature = 0.7,
   }) async {
     final body = _buildBody(messages, tools: tools, temperature: temperature);

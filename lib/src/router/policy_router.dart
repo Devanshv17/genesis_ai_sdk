@@ -1,6 +1,6 @@
 import '../core/message.dart';
 import '../providers/llm_provider.dart';
-import '../tools/genesis_tool.dart';
+import '../tools/agentic_tool.dart';
 
 /// Everything a routing rule can inspect about a single call.
 ///
@@ -12,7 +12,7 @@ class RouteContext {
   final List<Message> messages;
 
   /// Tools available for this call. Empty for plain chat / streaming.
-  final List<GenesisTool> tools;
+  final List<AgenticTool> tools;
 
   /// True when this call came from `stream()` rather than `complete()`.
   final bool isStreaming;
@@ -202,7 +202,7 @@ class RouteDecision {
 /// );
 ///
 /// // The agent never knows or cares which backend serves each turn.
-/// final agent = GenesisAgent(provider: router);
+/// final agent = AgenticAgent(provider: router);
 /// ```
 ///
 /// Rules are evaluated in order; first match wins; no match falls through to
@@ -270,7 +270,7 @@ class PolicyRouter extends LlmProvider {
   @override
   Future<ProviderResult> complete({
     required List<Message> messages,
-    List<GenesisTool> tools = const [],
+    List<AgenticTool> tools = const [],
     double temperature = 0.7,
   }) async {
     final decision = decide(RouteContext(messages: messages, tools: tools));

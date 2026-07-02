@@ -5,7 +5,7 @@
 /// import 'package:flutter_agentic/flutter_agentic.dart';
 ///
 /// // 1. Register your providers (once at startup)
-/// await GenesisAI.init(
+/// await AgenticAI.init(
 ///   providers: {
 ///     'gemini': GeminiProvider(apiKey: 'YOUR_GEMINI_KEY'),
 ///     'claude': AnthropicProvider(apiKey: 'YOUR_ANTHROPIC_KEY'),
@@ -14,10 +14,10 @@
 /// );
 ///
 /// // 2. Create an agent
-/// final agent = GenesisAgent(
-///   provider: GenesisAI.defaultProvider,
+/// final agent = AgenticAgent(
+///   provider: AgenticAI.defaultProvider,
 ///   systemPrompt: 'You are a helpful assistant.',
-///   tools: GenesisTools.all,
+///   tools: AgenticTools.all,
 /// );
 ///
 /// // 3. Chat
@@ -32,16 +32,16 @@ export 'src/core/agent_response.dart';
 export 'src/core/agent_step.dart';
 export 'src/core/context_manager.dart';
 export 'src/core/model_config.dart';
-export 'src/core/genesis_logger.dart';
-export 'src/core/genesis_ai.dart';
+export 'src/core/agentic_logger.dart';
+export 'src/core/agentic_ai.dart';
 
 // ── Tools ────────────────────────────────────────────────────────────────────
 export 'src/tools/tool_param.dart';
 export 'src/tools/tool_args.dart';
 export 'src/tools/tool_context.dart';
 export 'src/tools/tool_result.dart';
-export 'src/tools/genesis_tool.dart';
-export 'src/tools/genesis_tools.dart';
+export 'src/tools/agentic_tool.dart';
+export 'src/tools/agentic_tools.dart';
 
 // ── Providers ────────────────────────────────────────────────────────────────
 export 'src/providers/llm_provider.dart';
@@ -71,7 +71,7 @@ export 'src/router/smart_router.dart';
 export 'src/router/policy_router.dart'; // per-call routing: PolicyRouter, RouteRules
 
 // ── Flow — Genkit-style step chaining ────────────────────────────────────────
-export 'src/flow/genesis_flow.dart'; // GenesisFlow, FlowContext, FlowEvent
+export 'src/flow/agentic_flow.dart'; // AgenticFlow, FlowContext, FlowEvent
 
 // ── Safety ───────────────────────────────────────────────────────────────────
 export 'src/safety/input_guard.dart';
@@ -79,13 +79,13 @@ export 'src/safety/output_guard.dart';
 export 'src/safety/rate_limiter.dart';
 
 // ── Agent — main public API ───────────────────────────────────────────────────
-export 'src/agent/genesis_agent.dart';
+export 'src/agent/agentic_agent.dart';
 
 // ── Hub — universal model download + routing ──────────────────────────────────
 // ModelFormat and HFHub are web-safe (pure Dart / http).
-// UniversalModelManager and GenesisHub use dart:io so they are excluded from
+// UniversalModelManager and AgenticHub use dart:io so they are excluded from
 // web builds — import them directly when targeting native:
-//   import 'package:flutter_agentic/src/hub/genesis_hub.dart';
+//   import 'package:flutter_agentic/src/hub/agentic_hub.dart';
 //   import 'package:flutter_agentic/src/hub/universal_model_manager.dart';
 export 'src/hub/model_format.dart';   // ModelFormat enum + UnsupportedFormatException
 export 'src/hub/hf_hub.dart';         // HFHub, HFFile, HFModelInfo, HFException

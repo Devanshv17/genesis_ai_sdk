@@ -1,32 +1,32 @@
-/// GenesisHub — one-stop factory for creating AI agents from any source.
+/// AgenticHub — one-stop factory for creating AI agents from any source.
 ///
 /// This is the single highest-level API in flutter_agentic. Give it a URL,
 /// a HuggingFace repo, an Ollama model name, or a local file path — it
 /// downloads the model (if needed), detects the format, picks the right
-/// provider, and returns a ready-to-use [GenesisAgent].
+/// provider, and returns a ready-to-use [AgenticAgent].
 library;
 
 import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:path_provider/path_provider.dart';
-import '../agent/genesis_agent.dart';
+import '../agent/agentic_agent.dart';
 import '../memory/memory_store.dart';
 import '../providers/gemma_provider.dart';
 import '../providers/hf_inference_provider.dart';
 import '../providers/llm_provider.dart';
 import '../providers/ollama_provider.dart';
-import '../tools/genesis_tool.dart';
+import '../tools/agentic_tool.dart';
 import 'hf_hub.dart';
 import 'model_format.dart';
 import 'universal_model_manager.dart';
 
-/// One-stop factory for creating [GenesisAgent]s from any AI model source.
+/// One-stop factory for creating [AgenticAgent]s from any AI model source.
 ///
 /// ## Examples
 ///
 /// ```dart
 /// // ── From HuggingFace (downloads + runs locally) ──────────────────────
-/// final agent = await GenesisHub.fromHuggingFace(
+/// final agent = await AgenticHub.fromHuggingFace(
 ///   repoId: 'litert-community/Qwen3-0.6B',
 ///   destinationDir: await _modelsDir(),
 ///   systemPrompt: 'You are a helpful assistant.',
@@ -34,27 +34,27 @@ import 'universal_model_manager.dart';
 /// );
 ///
 /// // ── From any URL ─────────────────────────────────────────────────────
-/// final agent = await GenesisHub.fromUrl(
+/// final agent = await AgenticHub.fromUrl(
 ///   url: 'https://huggingface.co/bartowski/Qwen3-0.6B-GGUF/resolve/main/Qwen3-0.6B-Q4_K_M.gguf',
 ///   destinationPath: '/tmp/models/qwen3.gguf',
 ///   systemPrompt: 'You are a helpful assistant.',
 /// );
 ///
 /// // ── From Ollama (no download; server must be running) ────────────────
-/// final agent = GenesisHub.fromOllama(
+/// final agent = AgenticHub.fromOllama(
 ///   model: 'llama3.2',
 ///   systemPrompt: 'You are a helpful assistant.',
 /// );
 ///
 /// // ── From HF cloud (no download; any HF model, any format) ───────────
-/// final agent = GenesisHub.fromHFCloud(
+/// final agent = AgenticHub.fromHFCloud(
 ///   modelId: 'microsoft/Phi-4-mini-instruct',
 ///   apiToken: 'hf_xxxx',
 ///   systemPrompt: 'You are a helpful assistant.',
 /// );
 ///
 /// // ── From a local file already on disk ────────────────────────────────
-/// final agent = GenesisHub.fromFile(
+/// final agent = AgenticHub.fromFile(
 ///   modelPath: '/storage/emulated/0/models/qwen3.litertlm',
 ///   systemPrompt: 'You are a helpful assistant.',
 /// );
@@ -62,7 +62,7 @@ import 'universal_model_manager.dart';
 ///
 /// All factory methods accept the same common agent parameters:
 /// [systemPrompt], [tools], [memory], [sessionId].
-abstract class GenesisHub {
+abstract class AgenticHub {
   // ── HuggingFace (on-device) ───────────────────────────────────────────────
 
   /// Download the best model file from a HuggingFace repo and create an agent.
@@ -71,7 +71,7 @@ abstract class GenesisHub {
   /// 1. Queries the HF Hub API to list repo files.
   /// 2. Picks the best file for Flutter (`.litertlm` > `.gguf` > `.task`).
   /// 3. Downloads it to [destinationDir] (skips if already present).
-  /// 4. Constructs the right provider and wraps it in a [GenesisAgent].
+  /// 4. Constructs the right provider and wraps it in a [AgenticAgent].
   ///
   /// [repoId] — HuggingFace `owner/name`, e.g. `"litert-community/Qwen3-0.6B"`.
   /// [filename] — Pin a specific file; otherwise auto-selects the best.
@@ -82,14 +82,14 @@ abstract class GenesisHub {
   /// [forceRedownload] — Re-download even if the file already exists.
   ///
   /// Throws [HFException], [ModelDownloadException], [UnsupportedFormatException].
-  static Future<GenesisAgent> fromHuggingFace({
+  static Future<AgenticAgent> fromHuggingFace({
     required String repoId,
     String? filename,
     required String destinationDir,
     String? hfToken,
     String revision = 'main',
     String? systemPrompt,
-    List<GenesisTool> tools = const [],
+    List<AgenticTool> tools = const [],
     MemoryStore? memory,
     String? sessionId,
     ProgressCallback? onProgress,
@@ -150,12 +150,12 @@ abstract class GenesisHub {
   /// [destinationPath] — Full path where the file will be saved.
   ///
   /// Throws [ModelDownloadException], [UnsupportedFormatException].
-  static Future<GenesisAgent> fromUrl({
+  static Future<AgenticAgent> fromUrl({
     required String url,
     required String destinationPath,
     String? hfToken,
     String? systemPrompt,
-    List<GenesisTool> tools = const [],
+    List<AgenticTool> tools = const [],
     MemoryStore? memory,
     String? sessionId,
     ProgressCallback? onProgress,
@@ -196,12 +196,12 @@ abstract class GenesisHub {
   /// [onPullProgress] — Progress callback for the pull operation.
   ///
   /// Throws [OllamaException] if the server is unreachable.
-  static Future<GenesisAgent> fromOllama({
+  static Future<AgenticAgent> fromOllama({
     required String model,
     String baseUrl = 'http://localhost:11434',
     bool autoPull = false,
     String? systemPrompt,
-    List<GenesisTool> tools = const [],
+    List<AgenticTool> tools = const [],
     MemoryStore? memory,
     String? sessionId,
     ProgressCallback? onPullProgress,
@@ -237,12 +237,12 @@ abstract class GenesisHub {
   ///
   /// [modelId] — HF model ID, e.g. `"microsoft/Phi-4-mini-instruct"`.
   /// [apiToken] — HF API token. Read from `HF_TOKEN` env var if omitted.
-  static GenesisAgent fromHFCloud({
+  static AgenticAgent fromHFCloud({
     required String modelId,
     String? apiToken,
     int maxTokens = 1024,
     String? systemPrompt,
-    List<GenesisTool> tools = const [],
+    List<AgenticTool> tools = const [],
     MemoryStore? memory,
     String? sessionId,
   }) =>
@@ -267,12 +267,12 @@ abstract class GenesisHub {
   /// - `.gguf` → guidance to use [LlamaCppProvider] directly
   ///
   /// Throws [UnsupportedFormatException] for SafeTensors / ONNX.
-  static GenesisAgent fromFile({
+  static AgenticAgent fromFile({
     required String modelPath,
     String? modelId,
     bool supportImage = false,
     String? systemPrompt,
-    List<GenesisTool> tools = const [],
+    List<AgenticTool> tools = const [],
     MemoryStore? memory,
     String? sessionId,
   }) {
@@ -294,10 +294,10 @@ abstract class GenesisHub {
   ///
   /// Use this when you have a provider from another source (e.g. a custom
   /// provider, or [LlamaCppProvider] for GGUF files).
-  static GenesisAgent fromProvider({
+  static AgenticAgent fromProvider({
     required LlmProvider provider,
     String? systemPrompt,
-    List<GenesisTool> tools = const [],
+    List<AgenticTool> tools = const [],
     MemoryStore? memory,
     String? sessionId,
   }) =>
@@ -326,14 +326,14 @@ abstract class GenesisHub {
 
   // ── Private ───────────────────────────────────────────────────────────────
 
-  static GenesisAgent _makeAgent(
+  static AgenticAgent _makeAgent(
     LlmProvider provider, {
     String? systemPrompt,
-    List<GenesisTool> tools = const [],
+    List<AgenticTool> tools = const [],
     MemoryStore? memory,
     String? sessionId,
   }) =>
-      GenesisAgent(
+      AgenticAgent(
         provider: provider,
         systemPrompt: systemPrompt ?? 'You are a helpful assistant.',
         tools: tools,
@@ -351,7 +351,7 @@ abstract class GenesisHub {
         'Use LlamaCppProvider directly (it requires llama_cpp_dart):\n\n'
         "  import 'package:flutter_agentic/src/providers/llama_cpp_provider.dart';\n\n"
         '  final provider = LlamaCppProvider(modelPath: "$path");\n'
-        '  final agent = GenesisHub.fromProvider(provider: provider);\n',
+        '  final agent = AgenticHub.fromProvider(provider: provider);\n',
       );
     }
     return UniversalModelManager.providerForFile(path,
@@ -361,8 +361,8 @@ abstract class GenesisHub {
   static void _assertNative(String method) {
     if (kIsWeb) {
       throw UnsupportedError(
-        'GenesisHub.$method is not available on web. '
-        'Use GenesisHub.fromHFCloud() or GenesisHub.fromOllama() instead.',
+        'AgenticHub.$method is not available on web. '
+        'Use AgenticHub.fromHFCloud() or AgenticHub.fromOllama() instead.',
       );
     }
   }
@@ -378,13 +378,13 @@ abstract class GenesisHub {
 ///
 /// Usage:
 /// ```dart
-/// final dir = await GenesisHub.platformModelsDir();
-/// final agent = await GenesisHub.fromHuggingFace(
+/// final dir = await AgenticHub.platformModelsDir();
+/// final agent = await AgenticHub.fromHuggingFace(
 ///   repoId: 'litert-community/Qwen3-0.6B',
 ///   destinationDir: dir,
 /// );
 /// ```
-extension GenesisHubPlatformPaths on GenesisHub {
+extension AgenticHubPlatformPaths on AgenticHub {
   /// Returns a platform-appropriate **writable** directory for storing model files.
   ///
   /// Uses `path_provider` internally so the path is always correct:
@@ -400,12 +400,12 @@ extension GenesisHubPlatformPaths on GenesisHub {
   /// A `genesis_models` sub-directory is created inside the support dir.
   /// Override [subdir] to use a custom folder name.
   ///
-  /// Throws [UnsupportedError] on web (use [GenesisHub.fromHFCloud] there).
+  /// Throws [UnsupportedError] on web (use [AgenticHub.fromHFCloud] there).
   static Future<String> platformModelsDir({String subdir = 'genesis_models'}) async {
     if (kIsWeb) {
       throw UnsupportedError(
         'platformModelsDir() is not available on web. '
-        'Use GenesisHub.fromHFCloud() for web builds.',
+        'Use AgenticHub.fromHFCloud() for web builds.',
       );
     }
 

@@ -1,6 +1,6 @@
 name: flutter_agentic
 description: Build AI agents in Flutter — ReAct loop, 7 providers, on-device LLMs, per-call routing, and multi-step flows.
-version: 1.0.0
+version: 2.0.0
 homepage: https://github.com/Devanshv17/flutter_agentic
 repository: https://github.com/Devanshv17/flutter_agentic
 issue_tracker: https://github.com/Devanshv17/flutter_agentic/issues

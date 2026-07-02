@@ -1,4 +1,4 @@
-import '../genesis_tool.dart';
+import '../agentic_tool.dart';
 import '../tool_param.dart';
 
 /// A mock weather tool for testing and development.
@@ -10,10 +10,10 @@ import '../tool_param.dart';
 ///
 /// Usage:
 /// ```dart
-/// tools: [GenesisTools.mockWeather]  // testing
-/// tools: [WeatherTool(apiKey: '...')]  // production (genesis_ai_tools package)
+/// tools: [AgenticTools.mockWeather]  // testing
+/// tools: [WeatherTool(apiKey: '...')]  // production (flutter_agentic_tools package)
 /// ```
-final GenesisTool mockWeatherTool = GenesisTool.define(
+final AgenticTool mockWeatherTool = AgenticTool.define(
   name: 'get_weather',
   description:
       'Gets the current weather for a city. Returns temperature, '

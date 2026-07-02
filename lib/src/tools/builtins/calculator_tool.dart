@@ -1,4 +1,4 @@
-import '../genesis_tool.dart';
+import '../agentic_tool.dart';
 import '../tool_param.dart';
 
 /// Evaluates arithmetic expressions: +, -, *, /, ^ (power), % (modulo),
@@ -8,11 +8,11 @@ import '../tool_param.dart';
 ///
 /// Usage:
 /// ```dart
-/// tools: [GenesisTools.calculator]
+/// tools: [AgenticTools.calculator]
 /// ```
 ///
 /// Agent can then answer: "What is 15% of 2340?" or "sqrt of 144?"
-final GenesisTool calculatorTool = GenesisTool.define(
+final AgenticTool calculatorTool = AgenticTool.define(
   name: 'calculate',
   description:
       'Evaluates mathematical expressions. Supports +, -, *, /, '

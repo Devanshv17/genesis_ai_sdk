@@ -1,6 +1,6 @@
 import 'dart:math';
 import '../core/message.dart';
-import '../tools/genesis_tool.dart';
+import '../tools/agentic_tool.dart';
 import 'llm_provider.dart';
 
 /// Wraps any [LlmProvider] with automatic retry and exponential backoff.
@@ -41,7 +41,7 @@ class RetryProvider extends LlmProvider {
   @override
   Future<ProviderResult> complete({
     required List<Message> messages,
-    List<GenesisTool> tools = const [],
+    List<AgenticTool> tools = const [],
     double temperature = 0.7,
   }) =>
       _withRetry(() => inner.complete(

@@ -23,7 +23,7 @@ import 'package:flutter_agentic/flutter_agentic.dart';
 // 1. Simple lookup tool
 // The most common pattern: take a few string params, call an API, return data.
 // ─────────────────────────────────────────────────────────────────────────────
-final _simpleWeatherTool = GenesisTool.define(
+final _simpleWeatherTool = AgenticTool.define(
   name: 'get_weather',
   description: 'Returns current weather conditions for a city. '
       'Call this whenever the user asks about weather or temperature.',
@@ -52,7 +52,7 @@ final _simpleWeatherTool = GenesisTool.define(
 // 2. Tool with input validation (rich context version)
 // Use ToolArgs for safe typed access and ToolResult for structured errors.
 // ─────────────────────────────────────────────────────────────────────────────
-final _validatingEmailTool = GenesisTool.withContext(
+final _validatingEmailTool = AgenticTool.withContext(
   name: 'send_email',
   description: 'Sends an email to a recipient. '
       'Requires a valid email address and a non-empty subject.',
@@ -96,7 +96,7 @@ final _validatingEmailTool = GenesisTool.withContext(
 // ─────────────────────────────────────────────────────────────────────────────
 // 3. Tool with optional params + enum filtering
 // ─────────────────────────────────────────────────────────────────────────────
-final _searchTool = GenesisTool.withContext(
+final _searchTool = AgenticTool.withContext(
   name: 'search_products',
   description: 'Searches the product catalogue. '
       'Use when the user wants to find, browse, or compare products.',
@@ -141,7 +141,7 @@ final _searchTool = GenesisTool.withContext(
 // 4. Tool with nested object parameter
 // The `address` param is itself an object with its own typed fields.
 // ─────────────────────────────────────────────────────────────────────────────
-final _createOrderTool = GenesisTool.withContext(
+final _createOrderTool = AgenticTool.withContext(
   name: 'create_order',
   description: 'Creates a new order in the system.',
   params: {
@@ -186,7 +186,7 @@ final _createOrderTool = GenesisTool.withContext(
 // 5. Tool with array parameter
 // Accepts a list of IDs and looks them all up in one call.
 // ─────────────────────────────────────────────────────────────────────────────
-final _bulkLookupTool = GenesisTool.withContext(
+final _bulkLookupTool = AgenticTool.withContext(
   name: 'bulk_user_lookup',
   description: 'Looks up multiple users by their IDs in a single call.',
   params: {
@@ -228,7 +228,7 @@ final _bulkLookupTool = GenesisTool.withContext(
 // ─────────────────────────────────────────────────────────────────────────────
 // 6. Tool with typed error codes the agent can reason about
 // ─────────────────────────────────────────────────────────────────────────────
-final _paymentTool = GenesisTool.withContext(
+final _paymentTool = AgenticTool.withContext(
   name: 'charge_card',
   description: 'Charges a payment card. Returns a charge ID on success.',
   params: {
@@ -276,7 +276,7 @@ final _paymentTool = GenesisTool.withContext(
 // Fetches a URL, extracts text, counts words — three sequential steps.
 // Each step can access outputs of all previous steps via the shared state.
 // ─────────────────────────────────────────────────────────────────────────────
-final _documentAnalysisTool = GenesisTool.pipeline(
+final _documentAnalysisTool = AgenticTool.pipeline(
   name: 'analyse_url',
   description: 'Fetches a URL and analyses its text content: '
       'word count, character count, and a preview.',
@@ -341,7 +341,7 @@ final _documentAnalysisTool = GenesisTool.pipeline(
 // 8. Long-running tool with progress reporting
 // Progress updates surface in the agent's onStep callback.
 // ─────────────────────────────────────────────────────────────────────────────
-final _longRunningTool = GenesisTool.withContext(
+final _longRunningTool = AgenticTool.withContext(
   name: 'generate_report',
   description: 'Generates a detailed sales report for a date range. '
       'This takes a few seconds.',
@@ -387,10 +387,10 @@ final _longRunningTool = GenesisTool.withContext(
 // 9. Stateful tool via closure capture
 // Useful for tools that maintain counters, caches, or rate-limit state.
 // ─────────────────────────────────────────────────────────────────────────────
-GenesisTool buildCounterTool() {
+AgenticTool buildCounterTool() {
   var count = 0; // state captured in closure
 
-  return GenesisTool.withContext(
+  return AgenticTool.withContext(
     name: 'session_counter',
     description: 'Increments and returns a session counter. '
         'Use to track how many times something has been done.',
@@ -410,7 +410,7 @@ GenesisTool buildCounterTool() {
 // ─────────────────────────────────────────────────────────────────────────────
 // 10. Composed tool — one tool calls logic from another
 // ─────────────────────────────────────────────────────────────────────────────
-final _composedTool = GenesisTool.withContext(
+final _composedTool = AgenticTool.withContext(
   name: 'order_with_weather',
   description: 'Creates an order AND includes local weather at the destination.',
   params: {

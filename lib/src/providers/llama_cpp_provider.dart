@@ -31,7 +31,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:llama_cpp_dart/llama_cpp_dart.dart' as lc;
 import '../core/message.dart' as sdk;
-import '../tools/genesis_tool.dart';
+import '../tools/agentic_tool.dart';
 import 'llm_provider.dart';
 
 /// On-device LLM provider for **GGUF** model files using
@@ -53,7 +53,7 @@ import 'llm_provider.dart';
 ///   chatFormat: LlamaChatFormat.chatml, // for Qwen / Yi / most modern models
 /// );
 ///
-/// final agent = GenesisAgent(provider: provider, systemPrompt: 'Be helpful.');
+/// final agent = AgenticAgent(provider: provider, systemPrompt: 'Be helpful.');
 /// final response = await agent.chat('What is 2+2?');
 /// ```
 ///
@@ -126,7 +126,7 @@ class LlamaCppProvider extends LlmProvider {
   @override
   Future<ProviderResult> complete({
     required List<sdk.Message> messages,
-    List<GenesisTool> tools = const [],
+    List<AgenticTool> tools = const [],
     double temperature = 0.7,
   }) async {
     _assertNative();

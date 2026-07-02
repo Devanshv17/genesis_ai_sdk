@@ -48,7 +48,7 @@ class _RoutingExampleState extends State<RoutingExample> {
           maxTokens: 64,
         ),
       );
-      final agent = GenesisAgent(
+      final agent = AgenticAgent(
         provider: router,
         systemPrompt: 'Reply in one sentence.',
       );
@@ -103,7 +103,7 @@ class _RoutingExampleState extends State<RoutingExample> {
         ),
         sensitiveKeys: ['email', 'phone', 'name'],
       );
-      final agent = GenesisAgent(provider: router);
+      final agent = AgenticAgent(provider: router);
       final reply = await agent.chat(sensitivePrompt);
       setState(() {
         _results[0] = _RoutingResult(

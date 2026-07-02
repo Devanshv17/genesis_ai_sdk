@@ -21,7 +21,7 @@ class _StreamingExampleState extends State<StreamingExample> {
   bool _streaming = false;
   String? _error;
 
-  late final GenesisAgent _agent = GenesisAgent(
+  late final AgenticAgent _agent = AgenticAgent(
     provider: GeminiProvider(apiKey: _geminiKey),
     systemPrompt: 'You are a creative assistant.',
   );

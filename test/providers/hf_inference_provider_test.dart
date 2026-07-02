@@ -12,7 +12,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_agentic/src/core/message.dart';
-import 'package:flutter_agentic/src/hub/genesis_hub.dart';
+import 'package:flutter_agentic/src/hub/agentic_hub.dart';
 import 'package:flutter_agentic/src/providers/hf_inference_provider.dart';
 import 'package:flutter_agentic/src/providers/llm_provider.dart' show TextResult;
 
@@ -112,10 +112,10 @@ void main() {
           reason: 'Expected "mercury" in: "$text"');
     }, timeout: const Timeout(Duration(seconds: 60)));
 
-    test('GenesisHub.fromHFCloud() — creates agent and answers', () async {
+    test('AgenticHub.fromHFCloud() — creates agent and answers', () async {
       if (token.isEmpty || !online) return;
 
-      final agent = GenesisHub.fromHFCloud(
+      final agent = AgenticHub.fromHFCloud(
         modelId: _modelId,
         apiToken: token,
         maxTokens: 32,

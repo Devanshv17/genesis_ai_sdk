@@ -1,7 +1,7 @@
 /// Defines the type of a [ToolParam].
 enum ToolParamType { string, number, integer, boolean, array, object }
 
-/// A single typed parameter for a [GenesisTool].
+/// A single typed parameter for a [AgenticTool].
 ///
 /// Use the named constructors instead of the raw constructor:
 /// ```dart
@@ -168,7 +168,7 @@ class ToolParam {
 
 /// Builds the full JSON Schema `parameters` object from a map of [ToolParam]s.
 ///
-/// Used internally by [GenesisTool.define].
+/// Used internally by [AgenticTool.define].
 Map<String, dynamic> buildParametersSchema(Map<String, ToolParam> params) {
   final required =
       params.entries.where((e) => e.value.required).map((e) => e.key).toList();

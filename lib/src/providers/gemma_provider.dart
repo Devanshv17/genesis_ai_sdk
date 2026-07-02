@@ -4,7 +4,7 @@ import 'package:flutter_gemma/core/model.dart' as fg_model;
 import 'package:flutter_gemma/flutter_gemma.dart' as fg;
 import 'package:http/http.dart' as http;
 import '../core/message.dart';
-import '../tools/genesis_tool.dart';
+import '../tools/agentic_tool.dart';
 import 'llm_provider.dart';
 
 /// On-device LLM provider using [flutter_gemma](https://pub.dev/packages/flutter_gemma).
@@ -75,7 +75,7 @@ class GemmaProvider extends LlmProvider {
   @override
   Future<ProviderResult> complete({
     required List<Message> messages,
-    List<GenesisTool> tools = const [],
+    List<AgenticTool> tools = const [],
     double temperature = 0.7,
   }) async {
     _assertSupported();
@@ -134,7 +134,7 @@ class GemmaProvider extends LlmProvider {
   // ── Helpers ─────────────────────────────────────────────────────────────
 
   Future<(fg.InferenceChat, fg.InferenceModel)> _createChat(
-      List<GenesisTool> tools) async {
+      List<AgenticTool> tools) async {
     final modelType = _modelTypeFor(modelId);
     final fileType = _fileTypeFor(modelPath);
 
@@ -166,7 +166,7 @@ class GemmaProvider extends LlmProvider {
     ));
   }
 
-  List<fg.Tool> _convertTools(List<GenesisTool> tools) => tools
+  List<fg.Tool> _convertTools(List<AgenticTool> tools) => tools
       .map((t) => fg.Tool(
             name: t.name,
             description: t.description,

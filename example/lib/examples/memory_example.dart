@@ -26,7 +26,7 @@ class _MemoryExampleState extends State<MemoryExample> {
   // For persistent memory across app restarts, use:
   //   memory: HiveMemoryStore()
   // and call HiveMemoryStore.initialize() in main() first.
-  late final GenesisAgent _agent = GenesisAgent(
+  late final AgenticAgent _agent = AgenticAgent(
     provider: GeminiProvider(apiKey: _geminiKey),
     systemPrompt:
         'You are a friendly assistant. Remember details the user tells you.',

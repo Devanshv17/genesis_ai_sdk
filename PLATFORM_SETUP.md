@@ -260,7 +260,7 @@ shared with the user or other apps:
 
 ```dart
 // Easiest: let the SDK pick the right directory automatically
-final modelsDir = await GenesisHub.platformModelsDir();
+final modelsDir = await AgenticHub.platformModelsDir();
 final modelPath = '$modelsDir/qwen3-0.6b.litertlm';
 
 // Or use path_provider yourself:
@@ -403,7 +403,7 @@ void main() async {
   await FlutterGemma.initialize();
 
   final provider = await loadModel();
-  final agent = GenesisAgent(
+  final agent = AgenticAgent(
     provider: provider,
     systemPrompt: 'You are a helpful assistant.',
   );

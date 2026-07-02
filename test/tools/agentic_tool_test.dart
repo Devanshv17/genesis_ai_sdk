@@ -2,9 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_agentic/flutter_agentic.dart';
 
 void main() {
-  group('GenesisTool.define', () {
+  group('AgenticTool.define', () {
     test('name and description are stored', () {
-      final tool = GenesisTool.define(
+      final tool = AgenticTool.define(
         name: 'greet',
         description: 'Greets someone.',
         params: {
@@ -17,7 +17,7 @@ void main() {
     });
 
     test('parameters schema is generated from params map', () {
-      final tool = GenesisTool.define(
+      final tool = AgenticTool.define(
         name: 'test',
         description: 'Test tool',
         params: {
@@ -33,7 +33,7 @@ void main() {
     });
 
     test('execute returns correct output', () async {
-      final tool = GenesisTool.define(
+      final tool = AgenticTool.define(
         name: 'add',
         description: 'Adds two numbers.',
         params: {
@@ -51,7 +51,7 @@ void main() {
     });
 
     test('typedParams is available', () {
-      final tool = GenesisTool.define(
+      final tool = AgenticTool.define(
         name: 'x',
         description: 'x',
         params: {'val': ToolParam.boolean(description: 'v')},
@@ -62,9 +62,9 @@ void main() {
     });
   });
 
-  group('GenesisTool.withContext', () {
+  group('AgenticTool.withContext', () {
     test('execute receives ToolArgs and returns ToolSuccess data', () async {
-      final tool = GenesisTool.withContext(
+      final tool = AgenticTool.withContext(
         name: 'lookup',
         description: 'Looks up a value.',
         params: {
@@ -81,7 +81,7 @@ void main() {
     });
 
     test('ToolError is returned as error map', () async {
-      final tool = GenesisTool.withContext(
+      final tool = AgenticTool.withContext(
         name: 'fail',
         description: 'Always fails.',
         params: {},
@@ -94,7 +94,7 @@ void main() {
     });
 
     test('unexpected exception is caught and returned as error map', () async {
-      final tool = GenesisTool.withContext(
+      final tool = AgenticTool.withContext(
         name: 'boom',
         description: 'Throws.',
         params: {},
@@ -107,7 +107,7 @@ void main() {
 
     test('ToolContext progress callback fires', () async {
       final progress = <int>[];
-      final tool = GenesisTool.withContext(
+      final tool = AgenticTool.withContext(
         name: 'progress_test',
         description: 'Reports progress.',
         params: {},
@@ -124,9 +124,9 @@ void main() {
     });
   });
 
-  group('GenesisTool.pipeline', () {
+  group('AgenticTool.pipeline', () {
     test('steps execute in order and share state', () async {
-      final tool = GenesisTool.pipeline(
+      final tool = AgenticTool.pipeline(
         name: 'chain',
         description: 'Multi-step.',
         params: {
@@ -151,7 +151,7 @@ void main() {
     });
 
     test('ToolStepException stops pipeline and returns error map', () async {
-      final tool = GenesisTool.pipeline(
+      final tool = AgenticTool.pipeline(
         name: 'failing_chain',
         description: 'Fails at step 2.',
         params: {'x': ToolParam.integer(description: 'X', required: true)},
@@ -179,7 +179,7 @@ void main() {
 
     test('pipeline final state excludes no original keys by default', () async {
       // Pipeline merges, so original args stay in final state
-      final tool = GenesisTool.pipeline(
+      final tool = AgenticTool.pipeline(
         name: 'pass_through',
         description: 'Adds a field.',
         params: {'input': ToolParam.string(description: 'Input', required: true)},
@@ -197,7 +197,7 @@ void main() {
 
     test('assert fires when steps list is empty', () {
       expect(
-        () => GenesisTool.pipeline(
+        () => AgenticTool.pipeline(
           name: 'empty',
           description: 'No steps.',
           params: {},
@@ -208,9 +208,9 @@ void main() {
     });
   });
 
-  group('GenesisTool raw constructor', () {
+  group('AgenticTool raw constructor', () {
     test('typedParams is null for raw constructor', () {
-      final tool = GenesisTool(
+      final tool = AgenticTool(
         name: 'raw',
         description: 'Raw tool.',
         parameters: {
@@ -223,7 +223,7 @@ void main() {
     });
 
     test('raw tool executes correctly', () async {
-      final tool = GenesisTool(
+      final tool = AgenticTool(
         name: 'echo',
         description: 'Echoes input.',
         parameters: {'type': 'object', 'properties': {}},

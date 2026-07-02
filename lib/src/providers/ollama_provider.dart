@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../core/message.dart';
-import '../tools/genesis_tool.dart';
+import '../tools/agentic_tool.dart';
 import 'llm_provider.dart';
 
 /// LLM provider for [Ollama](https://ollama.ai) — a local model server.
@@ -62,7 +62,7 @@ class OllamaProvider extends LlmProvider {
         };
       }).toList();
 
-  List<Map<String, dynamic>> _convertTools(List<GenesisTool> tools) =>
+  List<Map<String, dynamic>> _convertTools(List<AgenticTool> tools) =>
       tools.map((t) => {
             'type': 'function',
             'function': {
@@ -77,7 +77,7 @@ class OllamaProvider extends LlmProvider {
   @override
   Future<ProviderResult> complete({
     required List<Message> messages,
-    List<GenesisTool> tools = const [],
+    List<AgenticTool> tools = const [],
     double temperature = 0.7,
   }) async {
     final body = <String, dynamic>{

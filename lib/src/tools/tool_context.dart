@@ -1,7 +1,7 @@
 /// Execution context injected into tool executors.
 ///
 /// Provides logging, progress reporting, and metadata about the current
-/// agent session. Available in tools defined with [GenesisTool.withContext].
+/// agent session. Available in tools defined with [AgenticTool.withContext].
 ///
 /// ```dart
 /// execute: (args, ctx) async {

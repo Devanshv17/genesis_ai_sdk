@@ -1,5 +1,5 @@
 import '../core/message.dart';
-import '../tools/genesis_tool.dart';
+import '../tools/agentic_tool.dart';
 
 /// A tool call requested by the model.
 class ToolCall {
@@ -33,7 +33,7 @@ abstract class LlmProvider {
   /// Pass [tools] to enable function calling.
   Future<ProviderResult> complete({
     required List<Message> messages,
-    List<GenesisTool> tools = const [],
+    List<AgenticTool> tools = const [],
     double temperature = 0.7,
   });
 

@@ -17,7 +17,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:http/http.dart' as http;
 import '../core/message.dart';
-import '../tools/genesis_tool.dart';
+import '../tools/agentic_tool.dart';
 import 'llm_provider.dart';
 
 // ── Backend enum ─────────────────────────────────────────────────────────────
@@ -76,7 +76,7 @@ enum HFInferenceBackend {
 ///   modelId: 'Qwen/Qwen2.5-0.5B-Instruct',
 ///   apiToken: 'hf_xxxx',
 /// );
-/// final agent = GenesisHub.fromProvider(provider: provider);
+/// final agent = AgenticHub.fromProvider(provider: provider);
 /// final reply = await agent.chat('Explain gravity in one sentence.');
 /// ```
 ///
@@ -117,7 +117,7 @@ class HFInferenceProvider extends LlmProvider {
   @override
   Future<ProviderResult> complete({
     required List<Message> messages,
-    List<GenesisTool> tools = const [],
+    List<AgenticTool> tools = const [],
     double temperature = 0.7,
   }) async {
     final body = <String, dynamic>{
@@ -257,7 +257,7 @@ class HFInferenceProvider extends LlmProvider {
               })
           .toList();
 
-  List<Map<String, dynamic>> _convertTools(List<GenesisTool> tools) =>
+  List<Map<String, dynamic>> _convertTools(List<AgenticTool> tools) =>
       tools
           .map((t) => {
                 'type': 'function',

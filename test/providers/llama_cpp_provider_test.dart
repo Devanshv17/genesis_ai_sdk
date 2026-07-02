@@ -20,7 +20,7 @@ import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_agentic/src/core/message.dart';
 import 'package:flutter_agentic/src/providers/llama_cpp_provider.dart';
 import 'package:flutter_agentic/src/providers/llm_provider.dart' show TextResult;
-import 'package:flutter_agentic/src/hub/genesis_hub.dart';
+import 'package:flutter_agentic/src/hub/agentic_hub.dart';
 
 // ── Paths ──────────────────────────────────────────────────────────────────
 
@@ -108,9 +108,9 @@ void main() {
       expect(tokens, isNotEmpty, reason: 'stream should yield at least 1 token');
     }, timeout: const Timeout(Duration(minutes: 5)));
 
-    test('GenesisHub.fromFile(.gguf) throws UnsupportedError', () {
+    test('AgenticHub.fromFile(.gguf) throws UnsupportedError', () {
       expect(
-        () => GenesisHub.fromFile(modelPath: '/tmp/model.gguf'),
+        () => AgenticHub.fromFile(modelPath: '/tmp/model.gguf'),
         throwsA(isA<UnsupportedError>()),
       );
     });

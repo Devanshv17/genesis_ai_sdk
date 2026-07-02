@@ -1,6 +1,6 @@
 import 'agent_step.dart';
 
-/// The final result returned by a GenesisAgent after completing its work.
+/// The final result returned by a AgenticAgent after completing its work.
 sealed class AgentResponse {
   /// All steps the agent took to arrive at this response.
   final List<AgentStep> steps;

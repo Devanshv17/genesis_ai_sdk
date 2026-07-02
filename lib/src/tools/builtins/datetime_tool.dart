@@ -1,4 +1,4 @@
-import '../genesis_tool.dart';
+import '../agentic_tool.dart';
 import '../tool_param.dart';
 
 /// Returns the current date, time, day, timezone info, and optional formatting.
@@ -7,9 +7,9 @@ import '../tool_param.dart';
 ///
 /// Usage:
 /// ```dart
-/// tools: [GenesisTools.dateTime]
+/// tools: [AgenticTools.dateTime]
 /// ```
-final GenesisTool dateTimeTool = GenesisTool.define(
+final AgenticTool dateTimeTool = AgenticTool.define(
   name: 'get_datetime',
   description:
       'Returns the current date and time. Use this whenever the user asks '

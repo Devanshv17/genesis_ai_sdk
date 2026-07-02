@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../genesis_tool.dart';
+import '../agentic_tool.dart';
 import '../tool_param.dart';
 
 /// Makes HTTP GET or POST requests and returns the response body.
@@ -13,7 +13,7 @@ import '../tool_param.dart';
 ///
 /// Usage:
 /// ```dart
-/// tools: [GenesisTools.httpGet]
+/// tools: [AgenticTools.httpGet]
 ///
 /// // With domain restriction:
 /// tools: [HttpTool(allowedDomains: ['api.openweathermap.org', 'api.github.com'])]
@@ -35,7 +35,7 @@ class HttpTool {
     this.timeout = const Duration(seconds: 10),
   });
 
-  GenesisTool get tool => GenesisTool.define(
+  AgenticTool get tool => AgenticTool.define(
         name: 'http_request',
         description:
             'Makes an HTTP GET or POST request to a URL and returns the response. '
@@ -132,4 +132,4 @@ class HttpTool {
 }
 
 /// Default [HttpTool] instance with no domain restrictions.
-final GenesisTool httpRequestTool = const HttpTool().tool;
+final AgenticTool httpRequestTool = const HttpTool().tool;

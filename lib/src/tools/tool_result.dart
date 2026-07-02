@@ -1,4 +1,4 @@
-/// Typed return value for [GenesisTool] executors.
+/// Typed return value for [AgenticTool] executors.
 ///
 /// Tools return either a success with structured data or a typed error that
 /// the agent can reason about.

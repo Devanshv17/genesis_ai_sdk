@@ -57,7 +57,7 @@ class _OllamaExampleState extends State<OllamaExample> {
         model: _modelController.text.trim(),
         baseUrl: _baseUrlController.text.trim(),
       );
-      final agent = GenesisAgent(
+      final agent = AgenticAgent(
         provider: provider,
         systemPrompt: 'You are a helpful assistant.',
       );

@@ -7,18 +7,30 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [2.0.0] — 2026-07-02
+
+### Changed — Breaking
+- **All public classes renamed** from `Genesis*` to `Agentic*` for consistency with the package name:
+  - `GenesisAgent` → `AgenticAgent`
+  - `GenesisAI` → `AgenticAI`
+  - `GenesisHub` → `AgenticHub`
+  - `GenesisTools` → `AgenticTools`
+  - `GenesisTool` → `AgenticTool`
+  - `GenesisFlow` → `AgenticFlow`
+  - `GenesisLogger` → `AgenticLogger`
+  - `GenesisModels` → `AgenticModels`
+  - `GenesisAIException` → `AgenticException`
+  - `GenesisHubPlatformPaths` → `AgenticHubPlatformPaths`
+
+---
+
 ## [1.0.0] — 2026-06-12
 
 ### Changed
 - **Package renamed** from `genesis_ai_sdk` to flutter_agentic — new import:
   `import 'package:flutter_agentic/flutter_agentic.dart';`
 - Version bumped to 1.0.0 to reflect production-ready stability (311 tests, 160/160 pub.dev score)
-
-### Roadmap (upcoming packages under the flutter_agentic umbrella)
-- `flutter_agentic_graph` — LangGraph-style stateful agent graphs with cycles and checkpointing
-- `flutter_agentic_ui` — Flutter widgets for agent step visualisation and human-in-the-loop gates
-- `flutter_agentic_tools` — Pre-built real-world tools (location, camera, clipboard, contacts)
-- `flutter_agentic_memory` — Semantic / vector memory for long-running agents
+- Companion packages now published: `flutter_agentic_graph`, `flutter_agentic_ui`, `flutter_agentic_tools`, `flutter_agentic_memory`
 
 ---
 
@@ -38,12 +50,12 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - `RouteDecision` + `onRoute` callback — observe every routing decision for
   logging, cost dashboards, or a "running locally 🔒 / cloud ☁️" UI badge.
 - Automatic fallback to the default provider when a routed provider fails.
-- `GenesisAgent.chat()` / `chatStream()` now accept an optional `provider`
+- `AgenticAgent.chat()` / `chatStream()` now accept an optional `provider`
   override to force a specific provider **for that call only**.
 
 #### Flows (Genkit-inspired)
-- `GenesisFlow` — chain multi-step AI pipelines with named, typed, observable
-  steps: `GenesisFlow.start<String>('trip-planner').then(...).map(...)`.
+- `AgenticFlow` — chain multi-step AI pipelines with named, typed, observable
+  steps: `AgenticFlow.start<String>('trip-planner').then(...).map(...)`.
 - `FlowContext` — shared state between steps (`ctx.set()` / `ctx.get()`).
 - `FlowEvent` (`FlowStepStarted` / `FlowStepCompleted` / `FlowStepFailed`) —
   live progress events for step-by-step UI.
@@ -68,11 +80,11 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Added
 
 #### Core
-- `GenesisAgent` — unified agent API with `chat()`, `stream()`, tool calling,
+- `AgenticAgent` — unified agent API with `chat()`, `stream()`, tool calling,
   and multi-turn memory.
-- `GenesisHub` — one-stop factory: `fromHuggingFace()`, `fromUrl()`,
+- `AgenticHub` — one-stop factory: `fromHuggingFace()`, `fromUrl()`,
   `fromOllama()`, `fromHFCloud()`, `fromFile()`, `fromProvider()`.
-- `GenesisHubPlatformPaths.platformModelsDir()` — returns the correct writable
+- `AgenticHubPlatformPaths.platformModelsDir()` — returns the correct writable
   model directory on every platform (uses `path_provider`).
 
 #### Providers
@@ -99,7 +111,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   `pullOllamaModel()`, `providerForFile()`, `isDownloaded()`, `deleteModel()`.
 
 #### Tools & ReAct
-- `GenesisTool` / `ToolParam` — define callable tools with typed parameters.
+- `AgenticTool` / `ToolParam` — define callable tools with typed parameters.
 - ReAct loop with configurable max steps and graceful fallback.
 
 #### Memory

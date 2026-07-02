@@ -1,7 +1,7 @@
 /// Model file format enumeration and detection utilities.
 library;
 
-/// Every on-device and cloud model format understood by the genesis_ai SDK.
+/// Every on-device and cloud model format understood by the flutter_agentic SDK.
 ///
 /// | Format | Extension(s) | Backend | Platforms |
 /// |--------|-------------|---------|-----------|

@@ -22,7 +22,7 @@ class _QuickStartExampleState extends State<QuickStartExample> {
   bool _loading = false;
   String? _error;
 
-  late final GenesisAgent _agent = GenesisAgent(
+  late final AgenticAgent _agent = AgenticAgent(
     provider: GeminiProvider(
       apiKey: _geminiKey,
       model: 'gemini-2.0-flash',

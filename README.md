@@ -19,7 +19,7 @@ flutter_agentic gives Flutter developers a single, clean API across 7 AI provide
 - **One API, every provider** — swap Gemini for Ollama for on-device Gemma with one line
 - **True ReAct agent loop** — the agent reasons, calls tools, observes results, and repeats
 - **Per-call routing** — `PolicyRouter` routes each request cloud/on-device by your rules
-- **Multi-step flows** — `GenesisFlow` chains LLM calls into named, observable pipelines
+- **Multi-step flows** — `AgenticFlow` chains LLM calls into named, observable pipelines
 - **Production-ready safety** — PII redaction, rate limiting, input/output guards built-in
 - **Full offline support** — run Gemma or any GGUF model entirely on-device, no internet
 
@@ -32,9 +32,9 @@ flutter_agentic gives Flutter developers a single, clean API across 7 AI provide
 | 🧠 **ReAct agent loop** | Reasons → calls tools → observes → repeats until done |
 | 🔌 **7 AI providers** | Gemini, OpenAI, Anthropic, HuggingFace (cloud), Ollama (local server), on-device Gemma, on-device GGUF (llama.cpp) |
 | 🧭 **Per-call routing** | `PolicyRouter` — route each call cloud/on-device by your own rules *(NEW in 0.2.0)* |
-| 🔗 **AI flows** | `GenesisFlow` — chain multi-step AI pipelines with named, observable steps *(NEW in 0.2.0)* |
+| 🔗 **AI flows** | `AgenticFlow` — chain multi-step AI pipelines with named, observable steps *(NEW in 0.2.0)* |
 | 🛠️ **Built-in tools** | Calculator, date/time, HTTP fetch, mock weather — zero config |
-| 🔧 **Custom tools** | Type-safe `GenesisTool.define()` with auto JSON Schema |
+| 🔧 **Custom tools** | Type-safe `AgenticTool.define()` with auto JSON Schema |
 | 💾 **Persistent memory** | `HiveMemoryStore` — history survives app restarts |
 | 🔁 **Smart retry** | Exponential backoff on 429 / 5xx with `RetryProvider` |
 | 🚦 **Safety layer** | Input guard, PII redaction, rate limiter, concurrency limiter |
@@ -70,17 +70,17 @@ import 'package:flutter_agentic/flutter_agentic.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await GenesisAI.init(
+  await AgenticAI.init(
     providers: {
       'gemini': GeminiProvider(apiKey: 'YOUR_GEMINI_API_KEY'),
     },
     defaultProviderKey: 'gemini',
   );
 
-  final agent = GenesisAgent(
-    provider: GenesisAI.defaultProvider,
+  final agent = AgenticAgent(
+    provider: AgenticAI.defaultProvider,
     systemPrompt: 'You are a helpful Flutter AI assistant.',
-    tools: GenesisTools.all,   // calculator + dateTime + httpRequest + mockWeather
+    tools: AgenticTools.all,   // calculator + dateTime + httpRequest + mockWeather
   );
 
   final response = await agent.chat('What is 1337 * 42?');
@@ -165,7 +165,7 @@ final provider = HFInferenceProvider(
   apiToken: 'hf_xxxx',   // free at huggingface.co/settings/tokens
 );
 
-final agent = GenesisHub.fromHFCloud(
+final agent = AgenticHub.fromHFCloud(
   modelId: 'Qwen/Qwen2.5-0.5B-Instruct',
   apiToken: 'hf_xxxx',
   systemPrompt: 'You are a helpful assistant.',
@@ -191,13 +191,13 @@ final provider = LlamaCppProvider(
   nThreads: 4,
 );
 
-// Or auto-detect via GenesisHub:
-final agent = await GenesisHub.fromFile('/path/to/model.gguf');
+// Or auto-detect via AgenticHub:
+final agent = await AgenticHub.fromFile('/path/to/model.gguf');
 final reply = await agent.chat('What is the capital of France?');
 ```
 
 ```dart
-final modelsDir = await GenesisHub.platformModelsDir();
+final modelsDir = await AgenticHub.platformModelsDir();
 // Android: /data/user/0/com.example.app/files/genesis_models
 // iOS/macOS: <NSApplicationSupport>/genesis_models
 // Windows/Linux: <ApplicationSupport>/genesis_models
@@ -210,7 +210,7 @@ final modelsDir = await GenesisHub.platformModelsDir();
 ## Custom tools
 
 ```dart
-final weatherTool = GenesisTool.define(
+final weatherTool = AgenticTool.define(
   name: 'get_weather',
   description: 'Returns current weather for a city.',
   params: [
@@ -224,9 +224,9 @@ final weatherTool = GenesisTool.define(
   },
 );
 
-final agent = GenesisAgent(
+final agent = AgenticAgent(
   provider: myProvider,
-  tools: [weatherTool, GenesisTools.calculator],
+  tools: [weatherTool, AgenticTools.calculator],
 );
 ```
 
@@ -249,7 +249,7 @@ final agent = GenesisAgent(
 ```dart
 await HiveMemoryStore.initialize();
 
-final agent = GenesisAgent(
+final agent = AgenticAgent(
   provider: myProvider,
   memory: HiveMemoryStore(),
   sessionId: 'user_${userId}',
@@ -266,7 +266,7 @@ Use `InMemoryStore()` (default) for ephemeral memory.
 ## Streaming
 
 ```dart
-final agent = GenesisAgent(provider: myProvider);
+final agent = AgenticAgent(provider: myProvider);
 
 await for (final chunk in agent.chatStream('Tell me a story.')) {
   stdout.write(chunk);
@@ -358,7 +358,7 @@ final router = PolicyRouter(
   onRoute: (d) => print(d), // log / show a "🔒 local" badge in your UI
 );
 
-final agent = GenesisAgent(provider: router); // call sites never change
+final agent = AgenticAgent(provider: router); // call sites never change
 ```
 
 Built-in rules: `sensitive()`, `shortInput()`, `longContext()`, `needsTools()`, `streaming()`, `custom()`.
@@ -371,12 +371,12 @@ await agent.chat('My salary is 95k, plan my budget', provider: localGemma);
 
 ---
 
-## GenesisFlow — multi-step AI pipelines *(NEW in 0.2.0)*
+## AgenticFlow — multi-step AI pipelines *(NEW in 0.2.0)*
 
 Chain agent calls, tool runs, and transforms into one named, type-safe, observable pipeline (inspired by Genkit flows, built Flutter-first):
 
 ```dart
-final tripPlanner = GenesisFlow.start<String>('trip-planner')
+final tripPlanner = AgenticFlow.start<String>('trip-planner')
     .then<String>('extract-city', (input, ctx) async {
       return (await extractor.chat('Extract the city: $input')).text;
     })
@@ -427,12 +427,12 @@ final fitted = manager.fit(messages);
 ## Logging
 
 ```dart
-await GenesisAI.init(
+await AgenticAI.init(
   providers: { ... },
   logLevel: LogLevel.debug,
 );
 
-GenesisLogger.setHandler((level, message, [error]) {
+AgenticLogger.setHandler((level, message, [error]) {
   Crashlytics.instance.log('[$level] $message');
 });
 ```
@@ -456,12 +456,22 @@ See [PLATFORM_SETUP.md](PLATFORM_SETUP.md) for native setup instructions per pla
 
 ---
 
+## The flutter_agentic family
+
+flutter_agentic is an umbrella — companion packages extend the core SDK:
+
+| Package | What it adds |
+|---|---|
+| [flutter_agentic_graph](https://pub.dev/packages/flutter_agentic_graph) | LangGraph-style stateful agent graphs — cycles, checkpointing, human-in-the-loop |
+| [flutter_agentic_ui](https://pub.dev/packages/flutter_agentic_ui) | Drop-in chat UI — streaming bubbles, ReAct step visualizer, input bar |
+| [flutter_agentic_tools](https://pub.dev/packages/flutter_agentic_tools) | Device tools — clipboard, sandboxed files, guarded HTTP, system info |
+| [flutter_agentic_memory](https://pub.dev/packages/flutter_agentic_memory) | Semantic memory — embeddings, on-device vector search, long-term recall |
+
 ## Roadmap
 
-- `genesis_ai_ui` — dynamic Flutter UI renderer driven by AI responses (A2UI)
-- `genesis_ai_tools` — device location, camera, clipboard, contacts tools
 - More providers: Mistral, Groq, Cohere, local llama.cpp server
-- Semantic memory with vector search
+- Parallel graph branches (fan-out / fan-in) in flutter_agentic_graph
+- More device tools: location, camera, contacts
 
 ---
 

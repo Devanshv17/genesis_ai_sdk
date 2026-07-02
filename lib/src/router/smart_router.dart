@@ -1,6 +1,6 @@
 import '../core/message.dart';
 import '../providers/llm_provider.dart';
-import '../tools/genesis_tool.dart';
+import '../tools/agentic_tool.dart';
 
 /// Strategy used by [SmartRouter] to pick a provider.
 enum RouterStrategy {
@@ -52,7 +52,7 @@ class SmartRouter extends LlmProvider {
   @override
   Future<ProviderResult> complete({
     required List<Message> messages,
-    List<GenesisTool> tools = const [],
+    List<AgenticTool> tools = const [],
     double temperature = 0.7,
   }) async {
     if (strategy == RouterStrategy.latencyBased) {
@@ -74,7 +74,7 @@ class SmartRouter extends LlmProvider {
 
   Future<ProviderResult> _withLatencyFallback(
     List<Message> messages,
-    List<GenesisTool> tools,
+    List<AgenticTool> tools,
     double temperature,
   ) async {
     try {
@@ -160,7 +160,7 @@ class PrivacyRouter extends LlmProvider {
   @override
   Future<ProviderResult> complete({
     required List<Message> messages,
-    List<GenesisTool> tools = const [],
+    List<AgenticTool> tools = const [],
     double temperature = 0.7,
   }) =>
       cloudProvider.complete(

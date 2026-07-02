@@ -45,7 +45,7 @@ class _HFInferenceExampleState extends State<HFInferenceExample> {
     setState(() { _streaming = true; _error = null; });
 
     try {
-      // Use GenesisHub.fromHFCloud for a one-liner, or build the provider
+      // Use AgenticHub.fromHFCloud for a one-liner, or build the provider
       // directly for full control over backend / maxTokens / timeout.
       final provider = HFInferenceProvider(
         modelId: _selectedModel,
@@ -53,7 +53,7 @@ class _HFInferenceExampleState extends State<HFInferenceExample> {
         maxTokens: 256,
         backend: _selectedBackend,
       );
-      final agent = GenesisAgent(
+      final agent = AgenticAgent(
         provider: provider,
         systemPrompt: 'You are a helpful assistant. Be concise.',
       );

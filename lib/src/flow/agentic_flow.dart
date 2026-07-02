@@ -61,7 +61,7 @@ class _FlowStep {
 /// step N+1's input), and observable via [run]'s `onEvent`.
 ///
 /// ```dart
-/// final tripPlanner = GenesisFlow.start<String>('trip-planner')
+/// final tripPlanner = AgenticFlow.start<String>('trip-planner')
 ///     .then<String>('extract-city', (input, ctx) async {
 ///       final r = await extractorAgent.chat('Extract the city: $input');
 ///       return r.text;
@@ -82,32 +82,32 @@ class _FlowStep {
 ///   onEvent: (e) => print(e), // live progress for the UI
 /// );
 /// ```
-class GenesisFlow<I, O> {
+class AgenticFlow<I, O> {
   /// Flow name, used in events and error messages.
   final String name;
   final List<_FlowStep> _steps;
 
-  GenesisFlow._(this.name, this._steps);
+  AgenticFlow._(this.name, this._steps);
 
   /// Begins a new flow whose input type is `T`.
-  static GenesisFlow<T, T> start<T>(String name) =>
-      GenesisFlow<T, T>._(name, const []);
+  static AgenticFlow<T, T> start<T>(String name) =>
+      AgenticFlow<T, T>._(name, const []);
 
   /// Appends a step that transforms this flow's output [O] into [T].
   ///
   /// Steps run strictly in order; each receives the previous step's output
   /// and the shared [FlowContext].
-  GenesisFlow<I, T> then<T>(
+  AgenticFlow<I, T> then<T>(
     String stepName,
     Future<T> Function(O input, FlowContext ctx) fn,
   ) =>
-      GenesisFlow<I, T>._(name, [
+      AgenticFlow<I, T>._(name, [
         ..._steps,
         _FlowStep(stepName, (input, ctx) async => await fn(input as O, ctx)),
       ]);
 
   /// Appends a synchronous transform — handy for parsing and validation.
-  GenesisFlow<I, T> map<T>(
+  AgenticFlow<I, T> map<T>(
     String stepName,
     T Function(O input, FlowContext ctx) fn,
   ) =>

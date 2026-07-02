@@ -2,9 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_agentic/flutter_agentic.dart';
 
 void main() {
-  group('GenesisFlow', () {
+  group('AgenticFlow', () {
     test('runs steps in order and returns final output', () async {
-      final flow = GenesisFlow.start<int>('math')
+      final flow = AgenticFlow.start<int>('math')
           .then<int>('double', (n, ctx) async => n * 2)
           .then<String>('describe', (n, ctx) async => 'result: $n');
 
@@ -13,7 +13,7 @@ void main() {
     });
 
     test('map adds a synchronous step', () async {
-      final flow = GenesisFlow.start<String>('parse')
+      final flow = AgenticFlow.start<String>('parse')
           .map<int>('to-int', (s, ctx) => int.parse(s))
           .map<int>('inc', (n, ctx) => n + 1);
 
@@ -21,7 +21,7 @@ void main() {
     });
 
     test('FlowContext shares state between steps', () async {
-      final flow = GenesisFlow.start<String>('ctx')
+      final flow = AgenticFlow.start<String>('ctx')
           .then<String>('store', (input, ctx) async {
             ctx.set('original', input);
             return input.toUpperCase();
@@ -35,7 +35,7 @@ void main() {
 
     test('emits start and complete events per step', () async {
       final events = <FlowEvent>[];
-      final flow = GenesisFlow.start<int>('events')
+      final flow = AgenticFlow.start<int>('events')
           .then<int>('a', (n, ctx) async => n + 1)
           .then<int>('b', (n, ctx) async => n + 1);
 
@@ -52,7 +52,7 @@ void main() {
 
     test('failing step throws FlowException with step name', () async {
       final events = <FlowEvent>[];
-      final flow = GenesisFlow.start<int>('boom')
+      final flow = AgenticFlow.start<int>('boom')
           .then<int>('ok', (n, ctx) async => n)
           .then<int>('explode', (n, ctx) async => throw StateError('bad'));
 
@@ -69,7 +69,7 @@ void main() {
     });
 
     test('flow with no steps returns input unchanged', () async {
-      final flow = GenesisFlow.start<String>('identity');
+      final flow = AgenticFlow.start<String>('identity');
       expect(await flow.run('same'), 'same');
     });
   });

@@ -12,7 +12,7 @@
 ///   9.  On-device GGUF (llama.cpp) — fully offline GGUF models
 ///  10.  Safety layer — input guard, output guard, rate limiter
 ///  11.  Smart routing — primary/fallback + privacy router
-///  12.  GenesisHub — one-line model loading from any source
+///  12.  AgenticHub — one-line model loading from any source
 ///
 /// Run with:
 ///   flutter run -d macos   # or android, ios, windows, linux
@@ -33,15 +33,15 @@ import 'examples/hf_inference_example.dart';
 import 'examples/ollama_example.dart';
 import 'examples/safety_example.dart';
 import 'examples/routing_example.dart';
-import 'examples/genesis_hub_example.dart';
+import 'examples/agentic_hub_example.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const GenesisAIExampleApp());
+  runApp(const AgenticExampleApp());
 }
 
-class GenesisAIExampleApp extends StatelessWidget {
-  const GenesisAIExampleApp({super.key});
+class AgenticExampleApp extends StatelessWidget {
+  const AgenticExampleApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +70,7 @@ class ExampleHome extends StatelessWidget {
     ('Ollama', '🦙  Local Ollama server inference', OllamaExample()),
     ('Safety', '🛡️  Input guard, output guard, rate limiter', SafetyExample()),
     ('Smart Routing', '🗺️  Fallback + privacy-aware routing', RoutingExample()),
-    ('GenesisHub', '🏠  One-line model loading from any source', GenesisHubExample()),
+    ('AgenticHub', '🏠  One-line model loading from any source', AgenticHubExample()),
   ];
 
   @override

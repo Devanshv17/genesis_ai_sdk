@@ -1,30 +1,30 @@
-/// Example 10 — GenesisHub
+/// Example 10 — AgenticHub
 ///
-/// GenesisHub is a one-line factory for creating agents from any source:
+/// AgenticHub is a one-line factory for creating agents from any source:
 ///   • fromHFCloud()  — any HuggingFace model, no download
 ///   • fromUrl()      — download a model file and run it
 ///   • fromOllama()   — connect to a running Ollama server
 ///   • fromFile()     — load a local .gguf / .litertlm / .task file
 ///   • fromProvider() — wrap any custom provider
 ///
-/// GenesisHub.platformModelsDir() returns the correct writable directory
+/// AgenticHub.platformModelsDir() returns the correct writable directory
 /// for model storage on every platform (uses path_provider internally).
 library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_agentic/flutter_agentic.dart';
 // ignore: implementation_imports
-import 'package:flutter_agentic/src/hub/genesis_hub.dart';
+import 'package:flutter_agentic/src/hub/agentic_hub.dart';
 
 const _hfToken = String.fromEnvironment('HF_TOKEN', defaultValue: '');
 
-class GenesisHubExample extends StatefulWidget {
-  const GenesisHubExample({super.key});
+class AgenticHubExample extends StatefulWidget {
+  const AgenticHubExample({super.key});
   @override
-  State<GenesisHubExample> createState() => _GenesisHubExampleState();
+  State<AgenticHubExample> createState() => _AgenticHubExampleState();
 }
 
-class _GenesisHubExampleState extends State<GenesisHubExample> {
+class _AgenticHubExampleState extends State<AgenticHubExample> {
   final _results = <_DemoResult>[];
 
   // ── Demo 1: fromHFCloud ────────────────────────────────────────────────────
@@ -32,7 +32,7 @@ class _GenesisHubExampleState extends State<GenesisHubExample> {
   Future<void> _demoFromHFCloud() async {
     _add(_DemoResult(method: 'fromHFCloud()', status: 'Running…'));
     try {
-      final agent = GenesisHub.fromHFCloud(
+      final agent = AgenticHub.fromHFCloud(
         modelId: 'Qwen/Qwen2.5-0.5B-Instruct',
         apiToken: _hfToken.isEmpty ? null : _hfToken,
         maxTokens: 64,
@@ -50,7 +50,7 @@ class _GenesisHubExampleState extends State<GenesisHubExample> {
   Future<void> _demoFromOllama() async {
     _add(_DemoResult(method: 'fromOllama()', status: 'Running…'));
     try {
-      final agent = await GenesisHub.fromOllama(
+      final agent = await AgenticHub.fromOllama(
         model: 'llama3.2',
         baseUrl: 'http://localhost:11434',
         systemPrompt: 'Reply in one sentence.',
@@ -72,7 +72,7 @@ class _GenesisHubExampleState extends State<GenesisHubExample> {
         apiToken: _hfToken.isEmpty ? null : _hfToken,
         maxTokens: 64,
       );
-      final agent = GenesisHub.fromProvider(
+      final agent = AgenticHub.fromProvider(
         provider: provider,
         systemPrompt: 'You are a helpful assistant.',
       );
@@ -88,7 +88,7 @@ class _GenesisHubExampleState extends State<GenesisHubExample> {
   Future<void> _demoPlatformModelsDir() async {
     _add(_DemoResult(method: 'platformModelsDir()', status: 'Running…'));
     try {
-      final dir = await GenesisHubPlatformPaths.platformModelsDir();
+      final dir = await AgenticHubPlatformPaths.platformModelsDir();
       _update(_DemoResult(method: 'platformModelsDir()', status: 'OK', output: dir));
     } catch (e) {
       _update(_DemoResult(method: 'platformModelsDir()', status: 'Error', output: e.toString()));
@@ -102,7 +102,7 @@ class _GenesisHubExampleState extends State<GenesisHubExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('10 · GenesisHub'),
+        title: const Text('10 · AgenticHub'),
         actions: [
           IconButton(
             icon: const Icon(Icons.clear_all),
@@ -128,9 +128,9 @@ class _GenesisHubExampleState extends State<GenesisHubExample> {
               children: [
                 _DemoTile(
                   icon: '🤗',
-                  title: 'GenesisHub.fromHFCloud()',
+                  title: 'AgenticHub.fromHFCloud()',
                   subtitle: 'Run any HF model — no download needed.',
-                  code: "GenesisHub.fromHFCloud(\n"
+                  code: "AgenticHub.fromHFCloud(\n"
                       "  modelId: 'Qwen/Qwen2.5-0.5B-Instruct',\n"
                       "  apiToken: 'hf_xxxx',\n"
                       ")",
@@ -138,27 +138,27 @@ class _GenesisHubExampleState extends State<GenesisHubExample> {
                 ),
                 _DemoTile(
                   icon: '🦙',
-                  title: 'GenesisHub.fromOllama()',
+                  title: 'AgenticHub.fromOllama()',
                   subtitle: 'Connect to a local Ollama server.',
-                  code: "GenesisHub.fromOllama(\n"
+                  code: "AgenticHub.fromOllama(\n"
                       "  model: 'llama3.2',\n"
                       ")",
                   onTap: _demoFromOllama,
                 ),
                 _DemoTile(
                   icon: '🔌',
-                  title: 'GenesisHub.fromProvider()',
+                  title: 'AgenticHub.fromProvider()',
                   subtitle: 'Wrap any custom provider.',
-                  code: "GenesisHub.fromProvider(\n"
+                  code: "AgenticHub.fromProvider(\n"
                       "  provider: HFInferenceProvider(...),\n"
                       ")",
                   onTap: _demoFromProvider,
                 ),
                 _DemoTile(
                   icon: '📁',
-                  title: 'GenesisHub.platformModelsDir()',
+                  title: 'AgenticHub.platformModelsDir()',
                   subtitle: 'Get the writable model directory for this platform.',
-                  code: "final dir = await GenesisHub.platformModelsDir();\n"
+                  code: "final dir = await AgenticHub.platformModelsDir();\n"
                       "// Android: /data/user/0/<package>/files/genesis_models\n"
                       "// iOS/macOS: <NSApplicationSupport>/genesis_models",
                   onTap: _demoPlatformModelsDir,
